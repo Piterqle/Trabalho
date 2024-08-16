@@ -39,7 +39,12 @@ class App(tk.Tk):
 
         bt_confirm = tk.Button(frame_login, text="Confirmar", width=10, command=self.confirm)
         bt_confirm.pack(anchor="w", padx=0, pady=10)
+
+        bt_cancelar = tk.Button(frame_login, text="Cancelar", width=10, command=self.cancelar)
+        bt_cancelar.pack(padx=0, pady=0, anchor="w")
         
+    def cancelar(self):
+        self.destroy()
     def confirm(self):
         nome = self.txb_nome.get()
         senha = self.txb_senha.get()
