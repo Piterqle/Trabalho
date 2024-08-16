@@ -38,13 +38,22 @@ class App(tk.Tk):
         self.txb_senha.pack(padx=0, pady=10, anchor="w")
 
         bt_confirm = tk.Button(frame_login, text="Confirmar", width=10, command=self.confirm)
-        bt_confirm.pack(anchor="w", padx=0, pady=10)
+        bt_confirm.pack(side="top", padx=0, pady=10)
 
         bt_cancelar = tk.Button(frame_login, text="Cancelar", width=10, command=self.cancelar)
-        bt_cancelar.pack(padx=0, pady=0, anchor="w")
+        bt_cancelar.pack(padx=0, pady=0, side="bottom")
+
+        tk.Label(self, text="Você é novo aqui?", font=("Arial", 10)).place(x=140, y=500)
+        label_cadastro = tk.Label(self, text="Cadastre-se", font=("Arial", 10), fg="#3498db" )
+        label_cadastro.place(x=250, y=500)
+        label_cadastro.bind("<Button>", command= self.cadastro)
         
+    
+    def cadastro(self):
+        pass
     def cancelar(self):
         self.destroy()
+    
     def confirm(self):
         nome = self.txb_nome.get()
         senha = self.txb_senha.get()
@@ -53,7 +62,7 @@ class App(tk.Tk):
                 if senha == data_base[i]["Senha"]:
                     messagebox.showinfo("Acesso Aceito", f"Bem-vindo: {nome}")
             else:
-                messagebox.showerro("Acesso Negado", "Verfique se sua senha ou nome")
+                messagebox.showerror("Acesso Negado", "Verfique se sua senha ou nome")
 
         
 
