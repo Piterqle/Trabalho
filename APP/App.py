@@ -1,24 +1,30 @@
 from tkinter import messagebox
 import tkinter as tk
 import json
+from Cadastro import Cadastro_janela
+import json
+
+arquivo = "DataBase_login.json"
+
+def ler(a):
+    try:
+        with open(a, mode="r", encoding="utf-8") as file:
+            dados = json.load(file)
+    except:
+        dados = {}
+    return dados
+
+
+data_base = ler(arquivo)
 
 
 
-data_base ={}
 
-gerente_nome = "Pedro"
-ID_gerente = "00"
-senha_gerente = "123"
-data_base[ID_gerente] = {"Nome": gerente_nome, "Senha": senha_gerente}
-
-
-
-class App(tk.Tk):
+class App_Super(tk.Tk):
     def __init__(self, *args):
         super().__init__(*args)
         self.geometry("500x600")
         self.title("Supermercado")
-    
         self.login()
 
     
@@ -34,7 +40,7 @@ class App(tk.Tk):
         self.txb_nome.pack(padx=0, pady=10, anchor="w")
 
         tk.Label(frame_login, font=("Arial", 11), text="Senha:").pack(padx=0, pady=0, anchor="w")
-        self.txb_senha = tk.Entry(frame_login, width=100)
+        self.txb_senha = tk.Entry(frame_login, width=100, show="*")
         self.txb_senha.pack(padx=0, pady=10, anchor="w")
 
         bt_confirm = tk.Button(frame_login, text="Confirmar", width=10, command=self.confirm)
@@ -46,11 +52,13 @@ class App(tk.Tk):
         tk.Label(self, text="Você é novo aqui?", font=("Arial", 10)).place(x=140, y=500)
         label_cadastro = tk.Label(self, text="Cadastre-se", font=("Arial", 10), fg="#3498db" )
         label_cadastro.place(x=250, y=500)
-        label_cadastro.bind("<Button>", command= self.cadastro)
-        
-    
-    def cadastro(self):
-        pass
+        label_cadastro.bind("<Button-1>", self.cadastro)
+
+    def cadastro(self,event=None):
+        cadastro = Cadastro_janela()
+        self.withdraw()
+        cadastro.mainloop()
+
     def cancelar(self):
         self.destroy()
     
@@ -64,9 +72,7 @@ class App(tk.Tk):
             else:
                 messagebox.showerror("Acesso Negado", "Verfique se sua senha ou nome")
 
-        
-
 
 if __name__ == "__main__":
-    Aplicativo = App()
+    Aplicativo = (App_Super())
     Aplicativo.mainloop()
