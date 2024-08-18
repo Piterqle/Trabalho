@@ -32,6 +32,8 @@ class Cadastro_janela(tk.Tk):
         super().__init__(*args)
         self.geometry("350x580")
         self.title("Cadastro")
+        self.cargo = tk.IntVar()
+        self.genero_var = tk.IntVar()
         self.display()
         
     def display(self):
@@ -43,13 +45,11 @@ class Cadastro_janela(tk.Tk):
         self.nome_cadastro.pack(anchor="w", pady=10)
 
         tk.Label(self.frame_cadastro, text="Gênero:", font=("Arial", 11) ).pack(anchor="w", pady=10)
-        self.genero_var = tk.IntVar(value=0)
         tk.Radiobutton(self.frame_cadastro, text="Masculino", font=("Arial", 8), variable=self.genero_var, value=1).pack(anchor="w")
         tk.Radiobutton(self.frame_cadastro, text="Feminino", font=("Arial", 8), variable=self.genero_var, value=2).pack(anchor="w")
         tk.Radiobutton(self.frame_cadastro, text="Outro", font=("Arial", 8), variable=self.genero_var, value=3).pack(anchor="w")
 
         tk.Label(self.frame_cadastro, text="Cargo:", font=("Arial", 12) ).pack(anchor="w", pady=10)
-        self.cargo = tk.IntVar(value=0)
         tk.Radiobutton(self.frame_cadastro, text="Gerente", font=("Arial", 8), variable=self.cargo, value=1).pack(anchor="w")
         tk.Radiobutton(self.frame_cadastro, text="Funcionário", font=("Arial", 8), variable=self.cargo, value=2).pack(anchor="w")
 
@@ -89,6 +89,7 @@ class Cadastro_janela(tk.Tk):
         return nome
             
     def select_genero(self):
+        genero = None
         if self.genero_var.get() == 1:
             genero = "Masculino"
         elif self.genero_var.get() == 2:
@@ -98,6 +99,7 @@ class Cadastro_janela(tk.Tk):
         return genero
     
     def select_cargo(self):
+        cargo = None
         if self.cargo.get() == 1:
             cargo = "Gerente"
         elif self.cargo.get() == 2:

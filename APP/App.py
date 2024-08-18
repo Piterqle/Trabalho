@@ -17,8 +17,8 @@ def ler(a):
 
 data_base = ler(arquivo)
 
-
-
+Cadastro_janela.genero_var.set(0)
+Cadastro_janela.cargo.set(0)
 
 class App_Super(tk.Tk):
     def __init__(self, *args):
