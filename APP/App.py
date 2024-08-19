@@ -4,7 +4,8 @@ import json
 from Cadastro import Cadastro_janela
 import json
 
-arquivo = "DataBase_login.json"
+arquivo = "BancoDeDados/DataBase_login.json"
+
 
 def ler(a):
     try:
@@ -16,10 +17,6 @@ def ler(a):
 
 
 data_base = ler(arquivo)
-
-Cadastro_janela.genero_var.set(0)
-Cadastro_janela.cargo.set(0)
-
 class App_Super(tk.Tk):
     def __init__(self, *args):
         super().__init__(*args)
@@ -55,9 +52,10 @@ class App_Super(tk.Tk):
         label_cadastro.bind("<Button-1>", self.cadastro)
 
     def cadastro(self,event=None):
-        cadastro = Cadastro_janela()
         self.withdraw()
+        cadastro = Cadastro_janela()
         cadastro.mainloop()
+         
 
     def cancelar(self):
         self.destroy()

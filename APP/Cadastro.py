@@ -3,7 +3,7 @@ from tkinter import messagebox
 import json
 
 
-arquivo = "APP/DataBase_login.json"
+arquivo = "BancoDeDados/DataBase_login.json"
 
 def ler(a):
         try:
@@ -28,8 +28,8 @@ senha_gerente = "123"
 data_base = ler(arquivo)
 
 class Cadastro_janela(tk.Tk):
-    def __init__(self, *args):
-        super().__init__(*args)
+    def __init__(self):
+        super().__init__()
         self.geometry("350x580")
         self.title("Cadastro")
         self.cargo = tk.IntVar()
@@ -64,6 +64,28 @@ class Cadastro_janela(tk.Tk):
         self.bt_cadastro.pack(side="top", pady=5)
         self.bt_cancelar = tk.Button(self.frame_cadastro, text="Cancelar", command=self.destroy, width=10, bg="#e74c3c")
         self.bt_cancelar.pack(side="bottom", pady=5)
+    
+    def verif_nome(self):
+        nome = self.nome_cadastro.get()
+        return nome
+            
+    def select_genero(self):
+        genero = self.genero_var.get()
+        if genero == 1:
+            genero = "Masculino"
+        elif genero == 2:
+            genero = "Feminino"
+        elif genero == 3:
+            genero = "Outro"
+        return genero
+    
+    def select_cargo(self):
+        cargo = None
+        if self.cargo.get() == 1:
+            cargo = "Gerente"
+        elif self.cargo.get() == 2:
+            cargo = "Funário"
+        return cargo
         
     def salvar(self, event=None):
         nome = self.verif_nome()
@@ -84,29 +106,7 @@ class Cadastro_janela(tk.Tk):
         else:
             messagebox.showerror("ERRO", "Senhas não se Coincidem")
 
-    def verif_nome(self):
-        nome = self.nome_cadastro.get()
-        return nome
-            
-    def select_genero(self):
-        genero = None
-        if self.genero_var.get() == 1:
-            genero = "Masculino"
-        elif self.genero_var.get() == 2:
-            genero = "Feminino"
-        elif self.genero_var.get() == 3:
-            genero = "Outro"
-        return genero
-    
-    def select_cargo(self):
-        cargo = None
-        if self.cargo.get() == 1:
-            cargo = "Gerente"
-        elif self.cargo.get() == 2:
-            cargo = "Funário"
-        return cargo
-    
-
+   
 if __name__ == "__main__":
     root = Cadastro_janela()
     root.mainloop()
