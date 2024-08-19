@@ -169,7 +169,7 @@ class App_Super(tk.Tk):
 
     
     #Àrea de Reescrever o app de acordo com a Necessidade
-    def open_cadastro(self,event=None):
+    def open_display(self,event=None):
         for widget in self.winfo_children():
             widget.destroy()
         self.Cadastro()
