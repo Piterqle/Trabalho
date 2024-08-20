@@ -18,7 +18,7 @@ def ler(a):
 
 def escrever(a, b):
     with open(a, mode="w", encoding="utf-8") as file:
-        json.dump(b, file)
+        json.dump(b, file, indent=2, ensure_ascii=False)
 
 # gerente_nome = "Pedro"
 # ID_gerente = 0
@@ -84,14 +84,14 @@ class App_Super(tk.Tk):
 
     #Àrea do Cadastro
     def Cadastro(self):
-        self.geometry("350x580")
+        self.geometry("500x600")
         
         self.genero_var = tk.IntVar(value=0)
         self.cargo = tk.IntVar(value=0)
         
         
         self.frame_cadastro = tk.Frame(self, width=200, height=100)
-        self.frame_cadastro.pack(anchor="w", padx=20, pady=20)
+        self.frame_cadastro.pack(padx=20, pady=20)
         
         tk.Label(self.frame_cadastro, text="Nome do Funcionario:", font=("Arial", 11)).pack(anchor="w")
         self.nome_cadastro = tk.Entry(self.frame_cadastro, width=50, bd=4)
@@ -115,7 +115,7 @@ class App_Super(tk.Tk):
 
         self.bt_cadastro = tk.Button(self.frame_cadastro, text="Salvar", command=self.salvar,width=10,  bg="#2ecc71")
         self.bt_cadastro.pack(side="top", pady=5)
-        self.bt_cancelar = tk.Button(self.frame_cadastro, text="Cancelar", command=self.destroy, width=10, bg="#e74c3c")
+        self.bt_cancelar = tk.Button(self.frame_cadastro, text="Cancelar", command=self.open_login, width=10, bg="#e74c3c")
         self.bt_cancelar.pack(side="bottom", pady=5)
     
     def verif_nome(self):
@@ -141,7 +141,7 @@ class App_Super(tk.Tk):
         if self.cargo.get() == 1:
             cargo = "Gerente"
         elif self.cargo.get() == 2:
-            cargo = "Funário"
+            cargo = "Funcionário"
         return cargo
         
     def salvar(self, event=None):

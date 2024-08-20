@@ -1,1 +1,29 @@
-{"1": {"ID": 1, "Nome": "12", "Pre\u00e7o": "R$ 13", "Quantidade": "13", "Lote": "121212", "Validade": "13", "Categoria": "121212"}}
+{
+  "1": {
+    "ID": 1,
+    "Nome": "Banana",
+    "Preço": "R$ 12",
+    "Quantidade": "500",
+    "Lote": "1212",
+    "Validade": "31313",
+    "Categoria": "1212"
+  },
+  "2": {
+    "ID": 2,
+    "Nome": "12",
+    "Preço": "R$ 1121313",
+    "Quantidade": "100",
+    "Lote": "13131211",
+    "Validade": "2121",
+    "Categoria": "13131211"
+  },
+  "3": {
+    "ID": 3,
+    "Nome": "12",
+    "Preço": "R$ 12",
+    "Quantidade": "100",
+    "Lote": "123",
+    "Validade": "123",
+    "Categoria": "123"
+  }
+}

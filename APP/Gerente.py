@@ -13,7 +13,7 @@ def ler(a):
 
 def escrever(a,b):
     with open(a, mode="w", encoding="utf-8") as file:
-        json.dump(b, file)
+        json.dump(b, file, indent=2, ensure_ascii=False)
 # Aki vai ficar uma deashboard que dê para adicionar Produtos 
 # Controle de Vendas com uma tabela de vendas
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
@@ -37,7 +37,7 @@ class Janela_Gerente(tk.Tk):
 
         frame_buttons = tk.Frame(frame_dash, bg="Black")
         frame_buttons.pack(anchor="center", padx= 400, pady=5)
-        bt_AddProtudo = tk.Button(frame_buttons, text="Adicionar Items", bg="white", width=20, command=self.on_add)
+        bt_AddProtudo = tk.Button(frame_buttons, text="🗃️ Adicionar Items", bg="white", width=20, command=self.on_add)
         bt_AddProtudo.pack(pady=5)
         bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20)
         bt_Vendas.pack()
@@ -53,17 +53,17 @@ class Janela_Gerente(tk.Tk):
         for coluna, atri in zip(column, lista_atributos):
             tree.heading(coluna, text=atri)
             tree.column(coluna, width=100)
+        
+
 
         for key, item in produto.items():
             valores = tuple(item[col] for col in column)
-            tree.insert("", tk.END, values=valores)
+            tree.insert("", tk.END, values=valores,tags=("bg", "fg"))
+            for i in item:
+                if item["Quantidade"] == "100":
+                    tree.configure("bg", background="red")
+                    break
 
-
-
-
-
-        
-        
     def on_add(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -77,10 +77,10 @@ class Janela_Gerente(tk.Tk):
         self.Gerente()
     
     def add_produto(self):
-        self.geometry("350x580")
+        self.geometry("950x600")
 
         frame_addP = tk.Frame(self, width=200, height=100 )
-        frame_addP.pack(padx=10 , pady=10, anchor="w")
+        frame_addP.pack(padx=10 , pady=10)
         
         tk.Label(frame_addP, text="Nome do Produto:", font=("Arial", 11)).pack( anchor="w")
         self.entry_nomeP = tk.Entry(frame_addP, width=50, bd=4)
@@ -109,7 +109,7 @@ class Janela_Gerente(tk.Tk):
         bt_salvar = tk.Button(frame_addP, width=15, text="Salvar Produto", bg="#2ecc71", command=self.salvar_produto)
         bt_salvar.pack(side="top", pady=10)
 
-        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.destroy)
+        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
         bt_cancelar.pack(side="bottom")
 
     def salvar_produto(self):
