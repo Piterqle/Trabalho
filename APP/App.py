@@ -1,6 +1,7 @@
 from tkinter import messagebox
 import tkinter as tk
 import json
+from Gerente import Janela_Gerente
 
 arquivo = "BancoDeDados/DataBase_login.json"
 db_produtos = "BancoDeDados/Estoque.json"
@@ -15,9 +16,9 @@ def ler(a):
             dados = {}
         return dados
 
-def escrever(a):
+def escrever(a, b):
     with open(a, mode="w", encoding="utf-8") as file:
-        json.dump(data_base, file)
+        json.dump(b, file)
 
 # gerente_nome = "Pedro"
 # ID_gerente = 0
@@ -156,20 +157,20 @@ class App_Super(tk.Tk):
                 if cargo == "Gerente":
                     if  senha == senha_gerente:
                         data_base[len(data_base)+1] = {"Nome": nome,"Gênero": genero, "Cargo": cargo, "Senha":senha}
-                        escrever(arquivo)
+                        escrever(arquivo, data_base)
                         self.open_login()
                     else:
                         messagebox.showerror("ERRO", "Você não tem Permissão para cadastrar como Gerente")
                 else:
                     data_base[len(data_base)+1] = {"Nome": nome,"Gênero": genero, "Cargo": cargo, "Senha":senha}
-                    escrever(arquivo)
+                    escrever(arquivo, data_base)
                     self.open_login()
         else:
             messagebox.showerror("ERRO", "Senhas não se Coincidem")
 
     
     #Àrea de Reescrever o app de acordo com a Necessidade
-    def open_display(self,event=None):
+    def open_cadastro(self,event=None):
         for widget in self.winfo_children():
             widget.destroy()
         self.Cadastro()
@@ -182,7 +183,7 @@ class App_Super(tk.Tk):
         self.login()
          
     def open_gerente(self, event=None):
-        print("teste")
+        Janela_Gerente().mainloop()
     
     def open_funcionario(self, envent=None):
         print("teste")
