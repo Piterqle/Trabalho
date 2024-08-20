@@ -54,15 +54,19 @@ class Janela_Gerente(tk.Tk):
             tree.heading(coluna, text=atri)
             tree.column(coluna, width=100)
         
-
-
+        
         for key, item in produto.items():
             valores = tuple(item[col] for col in column)
-            tree.insert("", tk.END, values=valores,tags=("bg", "fg"))
-            for i in item:
-                if item["Quantidade"] == "100":
-                    tree.configure("bg", background="red")
-                    break
+            item_id = tree.insert("", tk.END, values=valores,tags=("bg", ))
+            if int(item["Quantidade"]) <= 30:
+                tree.item(item_id, tags=("vermelho_bg",))
+            else:
+                tree.item(item_id, tags=("verde_bg", ))
+
+        tree.tag_configure("verde_bg", foreground="green")
+        tree.tag_configure("vermelho_bg", foreground="red")
+                
+
 
     def on_add(self):
         for widget in self.winfo_children():
