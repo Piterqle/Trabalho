@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import json
+from tkinter import ttk
 
 def ler(a):
         try:
@@ -36,11 +37,44 @@ class Janela_Gerente(tk.Tk):
 
         frame_buttons = tk.Frame(frame_dash, bg="Black")
         frame_buttons.pack(anchor="center", padx= 400, pady=5)
-        bt_AddProtudo = tk.Button(frame_buttons, text="Adicionar Items", bg="white", width=20)
+        bt_AddProtudo = tk.Button(frame_buttons, text="Adicionar Items", bg="white", width=20, command=self.on_add)
         bt_AddProtudo.pack(pady=5)
         bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20)
         bt_Vendas.pack()
 
+
+        estilo = ttk.Style()
+        estilo.configure("Treeview", font=("Arial", 10))
+        column = ("ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria")
+        tree = ttk.Treeview(self, columns= column, show="headings")
+        tree.pack(expand=True, fill="both")
+        lista_atributos = ["ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"]        
+
+        for coluna, atri in zip(column, lista_atributos):
+            tree.heading(coluna, text=atri)
+            tree.column(coluna, width=100)
+
+        for key, item in produto.items():
+            valores = tuple(item[col] for col in column)
+            tree.insert("", tk.END, values=valores)
+
+
+
+
+
+        
+        
+    def on_add(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        
+        self.add_produto()
+    
+    def on_main(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        
+        self.Gerente()
     
     def add_produto(self):
         self.geometry("350x580")
@@ -75,7 +109,7 @@ class Janela_Gerente(tk.Tk):
         bt_salvar = tk.Button(frame_addP, width=15, text="Salvar Produto", bg="#2ecc71", command=self.salvar_produto)
         bt_salvar.pack(side="top", pady=10)
 
-        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command= self.destroy)
+        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.destroy)
         bt_cancelar.pack(side="bottom")
 
     def salvar_produto(self):
@@ -88,10 +122,16 @@ class Janela_Gerente(tk.Tk):
         if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
             messagebox.showerror("ERRO", "Preencha os espaços")
         else:
-            produto[len(produto)+1] = {"Nome": nome_produto, 
-                                               "Preço": preço, 
-                                               "Quantidade": quantidade, 
-                                               "Lote": lote, 
-                                               "Validade":validade,
-                                               "Categoria": categoria}
+            produto[len(produto)+1] = {"ID": len(produto )+1,
+                                       "Nome": nome_produto, 
+                                        "Preço": f"R$ {preço}", 
+                                        "Quantidade": quantidade, 
+                                        "Lote": lote, 
+                                        "Validade":validade,
+                                        "Categoria": categoria}
             escrever(db_produtos, produto)
+            self.on_main()
+
+if __name__ == "__main__":
+    janela = Janela_Gerente()
+    janela.mainloop()
