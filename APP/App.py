@@ -186,7 +186,9 @@ class App_Super(tk.Tk):
         self.login()
          
     def open_gerente(self, event=None):
-        Janela_Gerente().mainloop()
+        self.destroy()
+        gerente =Janela_Gerente()
+        gerente.mainloop()
     
     def open_funcionario(self, envent=None):
         print("teste")

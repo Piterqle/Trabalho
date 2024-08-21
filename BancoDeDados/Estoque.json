@@ -2,28 +2,19 @@
   "1": {
     "ID": 1,
     "Nome": "Banana",
-    "Preço": "R$ 12",
-    "Quantidade": "500",
-    "Lote": "1212",
-    "Validade": "31313",
-    "Categoria": "1212"
+    "Preço": "R$ 12.60",
+    "Quantidade": 12,
+    "Lote": "13",
+    "Validade": "134",
+    "Categoria": "13"
   },
   "2": {
     "ID": 2,
-    "Nome": "sla",
-    "Preço": "R$ 12",
-    "Quantidade": "100",
-    "Lote": "3131",
-    "Validade": "12",
-    "Categoria": "3131"
-  },
-  "3": {
-    "ID": 3,
-    "Nome": "Maça",
-    "Preço": "R$ 1",
-    "Quantidade": "30",
-    "Lote": "2121",
-    "Validade": "131313",
-    "Categoria": "2121"
+    "Nome": "Sla",
+    "Preço": "R$ 12.00",
+    "Quantidade": 1313,
+    "Lote": "1212",
+    "Validade": "3131",
+    "Categoria": "1212"
   }
 }

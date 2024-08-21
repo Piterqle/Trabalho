@@ -28,9 +28,9 @@ class Janela_Gerente(tk.Tk):
 
     def Gerente(self):
         self.geometry("950x600")
-        self.title("'PODER ILIMITADO MORRA!!'")
+        self.title("Poderoso Chefinho")
         
-        frame_dash = tk.Frame(self, width=500 , height=100, bg="Black")
+        frame_dash = tk.Frame(self, width=500 , height=100, bg="Black") #Frame Dashboard
         frame_dash.pack(anchor="w")
 
         tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15)).pack(padx=10)
@@ -41,13 +41,16 @@ class Janela_Gerente(tk.Tk):
         bt_AddProtudo.pack(pady=5)
         bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20)
         bt_Vendas.pack()
+        bt_Edit= tk.Button(frame_buttons, text="Editar Quantidade", bg="White", width=20, command=self.on_edit )
+        bt_Edit.pack(pady=5)
 
-
+        tree_frame = tk.Frame(self)
+        tree_frame.pack(fill="both", expand=True)
         estilo = ttk.Style()
         estilo.configure("Treeview", font=("Arial", 10))
         column = ("ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria")
-        tree = ttk.Treeview(self, columns= column, show="headings")
-        tree.pack(expand=True, fill="both")
+        tree = ttk.Treeview(tree_frame, columns= column, show="headings",)
+        tree.pack(expand=True, fill="both", side="left")
         lista_atributos = ["ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"]        
 
         for coluna, atri in zip(column, lista_atributos):
@@ -55,18 +58,29 @@ class Janela_Gerente(tk.Tk):
             tree.column(coluna, width=100)
         
         
+
         for key, item in produto.items():
-            valores = tuple(item[col] for col in column)
-            item_id = tree.insert("", tk.END, values=valores,tags=("bg", ))
-            if int(item["Quantidade"]) <= 30:
+            valores = [item[col] for col in column]
+            item_id = tree.insert("", tk.END, values=valores,)
+            if int(item["Quantidade"]) <= 15:
                 tree.item(item_id, tags=("vermelho_bg",))
             else:
                 tree.item(item_id, tags=("verde_bg", ))
-
+            
         tree.tag_configure("verde_bg", foreground="green")
         tree.tag_configure("vermelho_bg", foreground="red")
-                
 
+        scroll = tk.Scrollbar(tree_frame, command=tree.yview)
+        scroll.pack(side="right", fill="y")
+        tree.config(yscrollcommand=scroll.set)
+        
+                
+    def editar(self):
+        self.geometry("950x600")
+        edit_frame = tk.Frame(self)
+        tk.Label(edit_frame, text="Editar Topico:", font=("Arial", 11)).pack( anchor="w")
+        self.entry_edit = tk.Entry(edit_frame, width=50, bd=4)
+        self.entry_edit.pack(pady=10, anchor="w")
 
     def on_add(self):
         for widget in self.winfo_children():
@@ -80,6 +94,11 @@ class Janela_Gerente(tk.Tk):
         
         self.Gerente()
     
+    def on_edit(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.editar()
+
     def add_produto(self):
         self.geometry("950x600")
 
@@ -118,8 +137,8 @@ class Janela_Gerente(tk.Tk):
 
     def salvar_produto(self):
         nome_produto = self.entry_nomeP.get()
-        preço = self.entry_preçokg.get()
-        quantidade = self.entry_quantP.get()
+        preço = float(self.entry_preçokg.get())
+        quantidade = int(self.entry_quantP.get())
         lote = self.entry_loteP.get()
         validade = self.entry_validadeP.get()
         categoria = self.entry_loteP.get()
@@ -128,7 +147,7 @@ class Janela_Gerente(tk.Tk):
         else:
             produto[len(produto)+1] = {"ID": len(produto )+1,
                                        "Nome": nome_produto, 
-                                        "Preço": f"R$ {preço}", 
+                                        "Preço": f"R$ {preço:.2f}", 
                                         "Quantidade": quantidade, 
                                         "Lote": lote, 
                                         "Validade":validade,
