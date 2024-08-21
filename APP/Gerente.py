@@ -19,14 +19,15 @@ def escrever(a,b):
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
 db_produtos = "BancoDeDados/Estoque.json"
 
-produto = ler(db_produtos)
+
 
 class Janela_Gerente(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.Gerente()
+        self.produto = ler(db_produtos)
+        self.gerente()
 
-    def Gerente(self):
+    def gerente(self):
         self.geometry("950x600")
         self.title("Poderoso Chefinho")
         
@@ -41,7 +42,7 @@ class Janela_Gerente(tk.Tk):
         bt_AddProtudo.pack(pady=5)
         bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20)
         bt_Vendas.pack()
-        bt_Edit= tk.Button(frame_buttons, text="Editar Quantidade", bg="White", width=20, command=self.on_edit )
+        bt_Edit= tk.Button(frame_buttons, text="Editar Item", bg="White", width=20, command=self.on_edit )
         bt_Edit.pack(pady=5)
 
         tree_frame = tk.Frame(self)
@@ -59,7 +60,7 @@ class Janela_Gerente(tk.Tk):
         
         
 
-        for key, item in produto.items():
+        for key, item in self.produto.items():
             valores = [item[col] for col in column]
             item_id = tree.insert("", tk.END, values=valores,)
             if int(item["Quantidade"]) <= 15:
@@ -74,31 +75,6 @@ class Janela_Gerente(tk.Tk):
         scroll.pack(side="right", fill="y")
         tree.config(yscrollcommand=scroll.set)
         
-                
-    def editar(self):
-        self.geometry("950x600")
-        edit_frame = tk.Frame(self)
-        tk.Label(edit_frame, text="Editar Topico:", font=("Arial", 11)).pack( anchor="w")
-        self.entry_edit = tk.Entry(edit_frame, width=50, bd=4)
-        self.entry_edit.pack(pady=10, anchor="w")
-
-    def on_add(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        
-        self.add_produto()
-    
-    def on_main(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        
-        self.Gerente()
-    
-    def on_edit(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        self.editar()
-
     def add_produto(self):
         self.geometry("950x600")
 
@@ -134,6 +110,62 @@ class Janela_Gerente(tk.Tk):
 
         bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
         bt_cancelar.pack(side="bottom")
+     
+    def screen_editar(self):
+        self.geometry("950x600")
+        
+        edit_frame = tk.Frame(self)
+        edit_frame.pack(anchor="center", expand=True, pady=10)
+
+        tk.Label(edit_frame, text="Digite o ID do item:", font=("Arial", 11)).pack( anchor="w")
+        self.entry_item = tk.Entry(edit_frame, width=50, bd=4)
+        self.entry_item.pack(pady=10, anchor="w")
+
+        tk.Label(edit_frame, text="Editar Qual Tópico:", font=("Arial", 11)).pack( anchor="w")
+        self.entry_edit = tk.Entry(edit_frame, width=50, bd=4)
+        self.entry_edit.pack(pady=10, anchor="w")
+
+        tk.Label(edit_frame, text="Qual será o Novo valor:", font=("Arial", 11)).pack( anchor="w")
+        self.entry_valor = tk.Entry(edit_frame, width=50, bd=4)
+        self.entry_valor.pack(pady=10, anchor="w")
+
+        bt_salvar = tk.Button(edit_frame, width=15, text="Salvar Alteração", bg="#2ecc71", command=self.editar)
+        bt_salvar.pack(side="top", pady=10)
+
+        bt_cancelar = tk.Button(edit_frame, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
+        bt_cancelar.pack(side="bottom")
+
+
+    def on_add(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        
+        self.add_produto()
+    
+    def on_main(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        
+        self.gerente()
+    
+    def on_edit(self):
+        for widget in self.winfo_children():
+            widget.destroy()
+        self.screen_editar()
+    
+    def editar(self):
+        ID = self.entry_item.get()
+        topico = self.entry_edit.get().capitalize()
+        valor = self.entry_valor.get()
+        if topico == "Preço":
+            valor = float(valor)
+        for item in self.produto:
+            if self.produto[ID]:
+                self.produto[ID][topico] = valor
+                escrever(db_produtos, self.produto)
+                self.on_main()
+            else:
+                messagebox.showerror("ERRO", "Verifique o ID")
 
     def salvar_produto(self):
         nome_produto = self.entry_nomeP.get()
@@ -145,14 +177,14 @@ class Janela_Gerente(tk.Tk):
         if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
             messagebox.showerror("ERRO", "Preencha os espaços")
         else:
-            produto[len(produto)+1] = {"ID": len(produto )+1,
+            self.produto[len(self.produto)+1] = {
                                        "Nome": nome_produto, 
                                         "Preço": f"R$ {preço:.2f}", 
                                         "Quantidade": quantidade, 
                                         "Lote": lote, 
                                         "Validade":validade,
                                         "Categoria": categoria}
-            escrever(db_produtos, produto)
+            escrever(db_produtos, self.produto)
             self.on_main()
 
 if __name__ == "__main__":

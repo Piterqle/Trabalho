@@ -1,24 +1,12 @@
 from tkinter import messagebox
 import tkinter as tk
 import json
-from Gerente import Janela_Gerente
+from Gerente import Janela_Gerente, ler, escrever
 
 arquivo = "BancoDeDados/DataBase_login.json"
 db_produtos = "BancoDeDados/Estoque.json"
 
 
-
-def ler(a):
-        try:
-            with open(a, mode="r", encoding="utf-8") as file:
-                dados = json.load(file)
-        except:
-            dados = {}
-        return dados
-
-def escrever(a, b):
-    with open(a, mode="w", encoding="utf-8") as file:
-        json.dump(b, file, indent=2, ensure_ascii=False)
 
 # gerente_nome = "Pedro"
 # ID_gerente = 0
@@ -27,7 +15,7 @@ senha_gerente = "123"
 # cargo_gerente = "Gerente"
 # data_base[ID_gerente] = {"Nome": gerente_nome,"Gênero": genero_gerente,"Cargo":cargo_gerente,  "Senha": senha_gerente}
 
-
+produto = ler(db_produtos)
 data_base = ler(arquivo)
 class App_Super(tk.Tk):
     def __init__(self, *args):
