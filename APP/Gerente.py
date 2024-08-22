@@ -158,7 +158,7 @@ class Janela_Gerente(tk.Tk):
         topico = self.entry_edit.get().capitalize()
         valor = self.entry_valor.get()
         if topico == "Preço":
-            valor = float(valor)
+            valor = f"{float(valor):.2f}"
         for item in self.produto:
             if self.produto[ID]:
                 self.produto[ID][topico] = valor
@@ -168,24 +168,31 @@ class Janela_Gerente(tk.Tk):
                 messagebox.showerror("ERRO", "Verifique o ID")
 
     def salvar_produto(self):
-        nome_produto = self.entry_nomeP.get()
-        preço = float(self.entry_preçokg.get())
-        quantidade = int(self.entry_quantP.get())
-        lote = self.entry_loteP.get()
-        validade = self.entry_validadeP.get()
-        categoria = self.entry_loteP.get()
-        if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
-            messagebox.showerror("ERRO", "Preencha os espaços")
-        else:
-            self.produto[len(self.produto)+1] = {
-                                       "Nome": nome_produto, 
-                                        "Preço": f"R$ {preço:.2f}", 
-                                        "Quantidade": quantidade, 
-                                        "Lote": lote, 
-                                        "Validade":validade,
-                                        "Categoria": categoria}
-            escrever(db_produtos, self.produto)
-            self.on_main()
+        try:
+            nome_produto = self.entry_nomeP.get()
+            preço = float(self.entry_preçokg.get())
+            quantidade = int(self.entry_quantP.get())
+            lote = self.entry_loteP.get()
+            validade = self.entry_validadeP.get()
+            categoria = self.entry_loteP.get()
+            if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
+                messagebox.showerror("ERRO", "Preencha os espaços")
+            else:
+                if (nome_produto, categoria).isdigit():
+                    messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Números)")
+                else:
+                    self.produto[len(self.produto)+1] = {
+                                            "Nome": nome_produto, 
+                                                "Preço": f"{preço:.2f}", 
+                                                "Quantidade": quantidade, 
+                                                "Lote": lote, 
+                                                "Validade":validade,
+                                                "Categoria": categoria}
+                    escrever(db_produtos, self.produto)
+                    self.on_main()
+        except:
+            messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Números)")
+        
 
 if __name__ == "__main__":
     janela = Janela_Gerente()
