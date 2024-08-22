@@ -29,6 +29,7 @@ class Janela_Gerente(tk.Tk):
 
     def gerente(self):
         self.geometry("950x600")
+        self.produto = ler(db_produtos)
         self.title("Poderoso Chefinho")
         
         frame_dash = tk.Frame(self, width=500 , height=100, bg="Black") #Frame Dashboard
@@ -113,6 +114,7 @@ class Janela_Gerente(tk.Tk):
      
     def screen_editar(self):
         self.geometry("950x600")
+        self.produto = ler(db_produtos)
         
         edit_frame = tk.Frame(self)
         edit_frame.pack(anchor="center", expand=True, pady=10)
