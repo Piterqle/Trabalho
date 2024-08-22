@@ -2,6 +2,7 @@ from tkinter import messagebox
 import tkinter as tk
 import json
 from Gerente import Janela_Gerente, ler, escrever
+from Caixa import janela_Caixa
 
 arquivo = "BancoDeDados/DataBase_login.json"
 db_produtos = "BancoDeDados/Estoque.json"
@@ -63,8 +64,8 @@ class App_Super(tk.Tk):
                     messagebox.showinfo("Acesso Aceito", f"Bem-vindo: {nome}")
                     if data_base[i]["Cargo"] == "Gerente":
                         self.open_gerente()
-                    else:
-                        self.open_funcionario()
+                    elif data_base[i]["Cargo"] == "Caixa":
+                        self.open_caixa()
                     break
         else:
             messagebox.showerror("Acesso Negado", "Verfique se sua senha ou nome")
@@ -178,8 +179,10 @@ class App_Super(tk.Tk):
         gerente =Janela_Gerente()
         gerente.mainloop()
     
-    def open_funcionario(self, envent=None):
-        print("teste")
+    def open_caixa(self, envent=None):
+        self.destroy()
+        root = janela_Caixa()
+        root.mainloop()
 
 if __name__ == "__main__":
     Aplicativo = (App_Super())

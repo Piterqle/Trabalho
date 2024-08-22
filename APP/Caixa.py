@@ -15,8 +15,11 @@ class janela_Caixa(tk.Tk):
 
     def Caixa(self):
         self.geometry("950x600")
-        red_frame = tk.Frame(self, bg="red", width=500, height=100)
-        red_frame.pack(side="top")
+        red_frame = tk.Frame(self, bg="#e74c3c", width=2000, height=100)
+        red_frame.pack(side="top", expand=True, anchor="n")
+        red_frame.pack_propagate(False)
+        
+        tk.Label(red_frame, text="Mercado Do Bom", font=("Arial", 45), fg="White", bg="#e74c3c").pack()
         
 if __name__ == "__main__":
     app = janela_Caixa()
