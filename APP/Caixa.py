@@ -10,6 +10,8 @@ class janela_Caixa(tk.Tk):
     def __init__(self):
         super().__init__()
         self.produto = ler(db_produtos)
+        self.carrinho = ler(vendas)
+        self.total = 0
         self.Caixa()
 
 
@@ -26,18 +28,18 @@ class janela_Caixa(tk.Tk):
         frame_entry.place(x=10, y=150)
         
         tk.Label(frame_entry, text="ID ou o Nome do Item:", font=("Arial", 15)).pack(anchor="w")
-        self.ID_compra = tk.Entry(frame_entry, width=50, bd=4)
+        self.ID_compra = tk.Entry(frame_entry, width=30, bd=4, font=("Arial", 11))
         self.ID_compra.pack(anchor="w")
 
         tk.Label(frame_entry, text="Quantidade:", font=("Arial", 15)).pack(anchor="w")
-        self.quant_compra = tk.Entry(frame_entry, width=50, bd=4)
+        self.quant_compra = tk.Entry(frame_entry, width=30, bd=4, font=("Arial", 11))
         self.quant_compra.pack(anchor="w")
 
         bt_carrinho = tk.Button(frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
         bt_carrinho.pack(side="top", pady=10)
 
         frame_tree = tk.Frame(self, bg="red", width=100, height=100)
-        frame_tree.pack()
+        frame_tree.place(x=450, y=150)
 
     def adicionar_carrinho(self):
         id_nome = self.ID_compra.get()
@@ -55,8 +57,10 @@ class janela_Caixa(tk.Tk):
                     preço_string = dict_produto[id_nome]["Preço"]
                     preço_float = float(preço_string.replace("R$", ""))
                     add_carrinho = float(preço_float * quant_item)
-                    self.carrinho[len(self.carrinho)]
-
+                    self.total += add_carrinho
+                    self.carrinho[len(self.carrinho)] = {""}
+                    
+                    break
             else:
                 messagebox.showerror("ERRO", "Verifique o ID")
                 

@@ -3,7 +3,7 @@
     "ID": 1,
     "Nome": "Banana",
     "Preço": "R$ 12.0",
-    "Quantidade": 1067,
+    "Quantidade": 799,
     "Lote": "1212",
     "Validade": "12",
     "Categoria": "Fruta"
@@ -12,7 +12,7 @@
     "ID": 2,
     "Nome": "Maçã",
     "Preço": "R$ 2.0",
-    "Quantidade": 123,
+    "Quantidade": 121,
     "Lote": "12",
     "Validade": "312",
     "Categoria": "Fruta"

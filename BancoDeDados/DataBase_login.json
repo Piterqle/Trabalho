@@ -4,5 +4,11 @@
     "Gênero": "Masculino",
     "Cargo": "Gerente",
     "Senha": "123"
+  },
+  "2": {
+    "Nome": "Pedro",
+    "Gênero": "Feminino",
+    "Cargo": "Gerente",
+    "Senha": "123"
   }
 }
