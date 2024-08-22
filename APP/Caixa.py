@@ -15,6 +15,7 @@ class janela_Caixa(tk.Tk):
 
     def Caixa(self):
         self.geometry("950x600")
+        self.produto = ler(db_produtos)
         red_frame = tk.Frame(self, bg="#e74c3c", width=1920, height=80)
         red_frame.pack( expand=True, anchor="n")
         red_frame.pack_propagate(False)
@@ -35,6 +36,9 @@ class janela_Caixa(tk.Tk):
         bt_carrinho = tk.Button(frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
         bt_carrinho.pack(side="top", pady=10)
 
+        frame_tree = tk.Frame(self, bg="red", width=100, height=100)
+        frame_tree.pack()
+
     def adicionar_carrinho(self):
         id_nome = self.ID_compra.get()
         quant_item = int(self.quant_compra.get())
@@ -48,15 +52,14 @@ class janela_Caixa(tk.Tk):
                     valor_estoque = int(dict_produto[id_nome]["Quantidade"]) - quant_item
                     dict_produto[id_nome]["Quantidade"] = valor_estoque
                     escrever(db_produtos, self.produto)
-                    preço_string = (db_produtos[id_nome]["Preço"].replace("R$", ""))
-                    add_carrinho = float(preço_string * quant_item)
-                    print(add_carrinho)
-                    break
-                elif dict_produto[index]["Nome"] == id_nome:
+                    preço_string = dict_produto[id_nome]["Preço"]
+                    preço_float = float(preço_string.replace("R$", ""))
+                    add_carrinho = float(preço_float * quant_item)
+                    self.carrinho[len(self.carrinho)]
 
-                    break
-                else:
-                    messagebox.showerror("ERRO", "Verifique o ID ou a senha")
+            else:
+                messagebox.showerror("ERRO", "Verifique o ID")
+                
 
 if __name__ == "__main__":
     app = janela_Caixa()

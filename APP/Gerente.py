@@ -14,7 +14,7 @@ def ler(a):
 def escrever(a,b):
     with open(a, mode="w", encoding="utf-8") as file:
         json.dump(b, file, indent=2, ensure_ascii=False)
-# Aki vai ficar uma deashboard que dê para adicionar Produtos 
+# Kore wa ikumasu deashboard que dê para adicionar Produtos 
 # Controle de Vendas com uma tabela de vendas
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
 db_produtos = "BancoDeDados/Estoque.json"
@@ -170,30 +170,33 @@ class Janela_Gerente(tk.Tk):
                 messagebox.showerror("ERRO", "Verifique o ID")
 
     def salvar_produto(self):
-        try:
-            nome_produto = self.entry_nomeP.get()
-            preço = float(self.entry_preçokg.get())
-            quantidade = int(self.entry_quantP.get())
-            lote = self.entry_loteP.get()
-            validade = self.entry_validadeP.get()
-            categoria = self.entry_loteP.get()
-            if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
-                messagebox.showerror("ERRO", "Preencha os espaços")
+        nome_produto = self.entry_nomeP.get().capitalize()
+        preço = self.entry_preçokg.get()
+        quantidade =self.entry_quantP.get()
+        lote = self.entry_loteP.get()
+        validade = self.entry_validadeP.get()
+        categoria = self.entry_categoriaP.get().capitalize()
+        if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
+            messagebox.showerror("ERRO", "Preencha os espaços")
+        else:
+            if nome_produto.isnumeric() or categoria.isnumeric():
+                messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
             else:
-                if (nome_produto, categoria).isdigit():
-                    messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Números)")
+                if preço.isalpha() or quantidade.isalpha():
+                    messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
                 else:
+
                     self.produto[len(self.produto)+1] = {
-                                            "Nome": nome_produto, 
-                                                "Preço": f"{preço:.2f}", 
-                                                "Quantidade": quantidade, 
+                                                "ID": len(self.produto)+1,
+                                                "Nome": nome_produto, 
+                                                "Preço": f"R$ {float(preço)}", 
+                                                "Quantidade": int(quantidade), 
                                                 "Lote": lote, 
                                                 "Validade":validade,
                                                 "Categoria": categoria}
                     escrever(db_produtos, self.produto)
                     self.on_main()
-        except:
-            messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Números)")
+
         
 
 if __name__ == "__main__":
