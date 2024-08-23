@@ -1,47 +1,66 @@
 import  tkinter as tk
 from tkinter import messagebox
+from tkinter import ttk
 import json
 from Gerente import ler, escrever
 
 # Aqui vai ficar a parte de venda dos produtos só adicionando o ID dele como se fosse  Código de barra e salvar em um arquivo
 db_produtos = "BancoDeDados/Estoque.json"
-vendas = "BancoDeDados/Vendas.json"
+db_vendas = "BancoDeDados/Vendas.json"
 class janela_Caixa(tk.Tk):
     def __init__(self):
         super().__init__()
         self.produto = ler(db_produtos)
-        self.carrinho = ler(vendas)
+        self.vendas = ler(db_vendas)
+        self.carrinho = {}
         self.total = 0
         self.Caixa()
 
 
     def Caixa(self):
-        self.geometry("950x600")
-        self.produto = ler(db_produtos)
-        red_frame = tk.Frame(self, bg="#e74c3c", width=1920, height=80)
-        red_frame.pack( expand=True, anchor="n")
-        red_frame.pack_propagate(False)
-        
-        tk.Label(red_frame, text="Mercado Do Bom", font=("Arial", 45), fg="White", bg="#e74c3c").pack()
+        self.geometry("1060x600")
 
-        frame_entry = tk.Frame(self)
-        frame_entry.place(x=10, y=150)
+        self.red_frame = tk.Frame(self, bg="#e74c3c", width=950, height=80)
+        self.red_frame.pack(fill="x", anchor="n")
+        self.red_frame.pack_propagate(False)
         
-        tk.Label(frame_entry, text="ID ou o Nome do Item:", font=("Arial", 15)).pack(anchor="w")
-        self.ID_compra = tk.Entry(frame_entry, width=30, bd=4, font=("Arial", 11))
+        tk.Label(self.red_frame, text="Mercado Do Bom", font=("Arial", 45), fg="White", bg="#e74c3c").pack(pady=10)
+
+        self.main_frame = tk.Frame(self)
+        self.main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+
+        self.frame_entry = tk.Frame(self.main_frame)
+        self.frame_entry.grid(row=0, column=0, sticky="nw", padx=10)
+
+        tk.Label(self.frame_entry, text="ID ou o Nome do Item:", font=("Arial", 15)).pack(anchor="w")
+        self.ID_compra = tk.Entry(self.frame_entry, width=30, bd=4, font=("Arial", 11))
         self.ID_compra.pack(anchor="w")
 
-        tk.Label(frame_entry, text="Quantidade:", font=("Arial", 15)).pack(anchor="w")
-        self.quant_compra = tk.Entry(frame_entry, width=30, bd=4, font=("Arial", 11))
+        tk.Label(self.frame_entry, text="Quantidade:", font=("Arial", 15)).pack(anchor="w")
+        self.quant_compra = tk.Entry(self.frame_entry, width=30, bd=4, font=("Arial", 11))
         self.quant_compra.pack(anchor="w")
 
-        bt_carrinho = tk.Button(frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
+        bt_carrinho = tk.Button(self.frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
         bt_carrinho.pack(side="top", pady=10)
 
-        frame_tree = tk.Frame(self, bg="red", width=100, height=100)
-        frame_tree.place(x=450, y=150)
+        lista_topico = ["ID", "Nome", "Quantidade", "Valor por Unidade", "Total"]
+        self.frame_tree = tk.Frame(self.main_frame, width=300, height=300)
+        self.frame_tree.grid(row=0, column=1, padx=10, pady=10)
+        self.frame_tree.grid_propagate(False)
+        
+        self.tree = ttk.Treeview(self.frame_tree, columns=lista_topico, show="headings")
+        self.tree.pack(expand=True, fill="both", side="left")
+        self.tree.grid_propagate(False)
 
+        for coluna in lista_topico:
+            self.tree.heading(coluna, text=coluna)
+            self.tree.column(coluna, width=150)
+
+        for index in self.carrinho:
+            self.tree.insert("", "end", values=self.carrinho[index]["ID"])
+    
     def adicionar_carrinho(self):
+        
         id_nome = self.ID_compra.get()
         quant_item = int(self.quant_compra.get())
         dict_produto = self.produto
@@ -58,8 +77,11 @@ class janela_Caixa(tk.Tk):
                     preço_float = float(preço_string.replace("R$", ""))
                     add_carrinho = float(preço_float * quant_item)
                     self.total += add_carrinho
-                    self.carrinho[len(self.carrinho)] = {""}
-                    
+                    self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
+                                                        "Nome": dict_produto[id_nome]["Nome"], 
+                                                        "Quantidade": quant_item,
+                                                        "Valor por Unidade": dict_produto[id_nome]["Preço"],
+                                                        "Total": f"R$ {add_carrinho}"}
                     break
             else:
                 messagebox.showerror("ERRO", "Verifique o ID")
