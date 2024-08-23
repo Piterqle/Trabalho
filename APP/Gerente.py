@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 from tkinter import ttk
+from datetime import datetime
 
 def ler(a):
         try:
@@ -86,7 +87,7 @@ class Janela_Gerente(tk.Tk):
         self.entry_nomeP = tk.Entry(frame_addP, width=50, bd=4)
         self.entry_nomeP.pack(pady=10, anchor="w")
 
-        tk.Label(frame_addP, text="Preço Unitário", font=("Arial", 11) ).pack(anchor="w")
+        tk.Label(frame_addP, text="Preço por KG", font=("Arial", 11) ).pack(anchor="w")
         self.entry_preçokg = tk.Entry(frame_addP, width=50, bd=4)
         self.entry_preçokg.pack(pady=10, anchor="w")
 
@@ -189,7 +190,7 @@ class Janela_Gerente(tk.Tk):
                     self.produto[len(self.produto)+1] = {
                                                 "ID": len(self.produto)+1,
                                                 "Nome": nome_produto, 
-                                                "Preço": f"R$ {float(preço)}", 
+                                                "Preço": f"R$ {preço}", 
                                                 "Quantidade": int(quantidade), 
                                                 "Lote": lote, 
                                                 "Validade":validade,
