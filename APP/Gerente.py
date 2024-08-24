@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import json
 from tkinter import ttk
-from datetime import datetime
+from datetime import *
 
 def ler(a):
         try:
@@ -36,7 +36,7 @@ class Janela_Gerente(tk.Tk):
         frame_dash = tk.Frame(self, width=500 , height=100, bg="Black") #Frame Dashboard
         frame_dash.pack(anchor="w")
 
-        tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15)).pack(padx=10)
+        tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15, "bold")).pack(padx=10)
 
         frame_buttons = tk.Frame(frame_dash, bg="Black")
         frame_buttons.pack(anchor="center", padx= 400, pady=5)
@@ -70,8 +70,8 @@ class Janela_Gerente(tk.Tk):
             else:
                 tree.item(item_id, tags=("verde_bg", ))
             
-        tree.tag_configure("verde_bg", foreground="green")
-        tree.tag_configure("vermelho_bg", foreground="red")
+        tree.tag_configure("verde_bg", foreground="green", font=("Arial", 10))
+        tree.tag_configure("vermelho_bg", foreground="red", font=("Arial", 10))
 
         scroll = tk.Scrollbar(tree_frame, command=tree.yview)
         scroll.pack(side="right", fill="y")
@@ -125,8 +125,9 @@ class Janela_Gerente(tk.Tk):
         self.entry_item.pack(pady=10, anchor="w")
 
         tk.Label(edit_frame, text="Editar Qual Tópico:", font=("Arial", 11)).pack( anchor="w")
-        self.entry_edit = tk.Entry(edit_frame, width=50, bd=4)
-        self.entry_edit.pack(pady=10, anchor="w")
+        self.combo_topico = ttk.Combobox(edit_frame, values=("Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"),
+                                         width=41, font=("Arial", 10))
+        self.combo_topico.pack(pady=10, anchor="w")
 
         tk.Label(edit_frame, text="Qual será o Novo valor:", font=("Arial", 11)).pack( anchor="w")
         self.entry_valor = tk.Entry(edit_frame, width=50, bd=4)
@@ -158,15 +159,19 @@ class Janela_Gerente(tk.Tk):
     
     def editar(self):
         ID = self.entry_item.get()
-        topico = self.entry_edit.get().capitalize()
+        topico = self.combo_topico.get()
         valor = self.entry_valor.get()
-        if topico == "Preço":
-            valor = f"{float(valor):.2f}"
-        for item in self.produto:
-            if self.produto[ID]:
-                self.produto[ID][topico] = valor
-                escrever(db_produtos, self.produto)
-                self.on_main()
+        if "" in (ID, topico, valor):
+            messagebox.showerror("ERRO", "Preencha os Espaços")
+        else:
+            if topico == "Preço":
+                valor = f"{float(valor):.2f}"
+            for item in self.produto:
+                if self.produto[ID]:
+                    self.produto[ID][topico] = valor
+                    escrever(db_produtos, self.produto)
+                    self.on_main()
+                    break
             else:
                 messagebox.showerror("ERRO", "Verifique o ID")
 
@@ -186,19 +191,21 @@ class Janela_Gerente(tk.Tk):
                 if preço.isalpha() or quantidade.isalpha():
                     messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
                 else:
+                    if len(validade) >= 6:
+                        self.produto[len(self.produto)+1] = {
+                                                    "ID": len(self.produto)+1,
+                                                    "Nome": nome_produto, 
+                                                    "Preço": f"R$ {preço}", 
+                                                    "Quantidade": int(quantidade), 
+                                                    "Lote": lote, 
+                                                    "Validade": datetime.strptime(validade, "%d/%m/%Y"),
+                                                    "Categoria": categoria}
+                        escrever(db_produtos, self.produto)
+                        self.on_main()
+                    else:
+                        messagebox.showerror("ERRO","Verifique a Data")
 
-                    self.produto[len(self.produto)+1] = {
-                                                "ID": len(self.produto)+1,
-                                                "Nome": nome_produto, 
-                                                "Preço": f"R$ {preço}", 
-                                                "Quantidade": int(quantidade), 
-                                                "Lote": lote, 
-                                                "Validade":validade,
-                                                "Categoria": categoria}
-                    escrever(db_produtos, self.produto)
-                    self.on_main()
 
-        
 
 if __name__ == "__main__":
     janela = Janela_Gerente()

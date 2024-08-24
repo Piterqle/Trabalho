@@ -24,7 +24,7 @@ class janela_Caixa(tk.Tk):
         self.red_frame.pack(fill="x", anchor="n")
         self.red_frame.pack_propagate(False)
         
-        tk.Label(self.red_frame, text="Mercado Do Bom", font=("Arial", 45), fg="White", bg="#e74c3c").pack(pady=10)
+        tk.Label(self.red_frame, text="Mercado Do Bom", font=("Arial", 45, "bold"), fg="White", bg="#e74c3c").pack(pady=10)
 
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True, padx=10, pady=10)
@@ -59,8 +59,9 @@ class janela_Caixa(tk.Tk):
         scroll = ttk.Scrollbar(self.frame_tree, command=self.tree.yview)
         scroll.pack(side="right", fill="y")
         self.tree.config(yscrollcommand=scroll.set)
+        self.tree.tag_configure("all", font=("Arial", 12))
 
-        self.label_total = tk.Label(self.main_frame, font=("Arial", 13),text="O Valor Total é R$ 0,00")
+        self.label_total = tk.Label(self.main_frame, font=("Arial", 20, "bold"),text="O Valor Total é R$ 0,00")
         self.label_total.grid(column=1, row=1)
 
         
@@ -75,16 +76,16 @@ class janela_Caixa(tk.Tk):
         else:
             for index in dict_produto:
                 if dict_produto[id_nome]:
-                    quant_estoque = dict_produto[id_nome]["Quantidade"]
-                    valor_estoque = (quant_estoque) - int(quant_item)
-                    dict_produto[id_nome]["Quantidade"] = valor_estoque
+                    quant_estoque = float(dict_produto[id_nome]["Quantidade"])
+                    valor_estoque = (quant_estoque) - float(quant_item)
+                    dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
                     escrever(db_produtos, self.produto)
                     preço_string = str(dict_produto[id_nome]["Preço"])
                     preço_float = float(preço_string.replace("R$", "").replace(",", "."))
                     
                     
                     
-                    add_carrinho = preço_float * quant_item
+                    add_carrinho = preço_float * float(quant_item)
                     self.total += add_carrinho
                     self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
                                                         "Nome": dict_produto[id_nome]["Nome"], 
@@ -100,7 +101,7 @@ class janela_Caixa(tk.Tk):
                 self.tree.delete(widget)
             for key, index in self.carrinho.items():
                 valores = [index[col] for col in self.lista_topico]
-                self.tree.insert("", tk.END, values=valores,)
+                self.tree.insert("", tk.END, values=valores, tags="all")
             string_total = str(self.total)
             self.label_total.configure(text=f"O Valor Total é R$ {string_total.replace(".", ",")}")
 
