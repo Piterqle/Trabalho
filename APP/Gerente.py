@@ -180,7 +180,7 @@ class Janela_Gerente(tk.Tk):
         preço = self.entry_preçokg.get()
         quantidade =self.entry_quantP.get()
         lote = self.entry_loteP.get()
-        validade = self.entry_validadeP.get()
+        validade = self.data(self.entry_validadeP.get())
         categoria = self.entry_categoriaP.get().capitalize()
         if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
             messagebox.showerror("ERRO", "Preencha os espaços")
@@ -198,14 +198,21 @@ class Janela_Gerente(tk.Tk):
                                                     "Preço": f"R$ {preço}", 
                                                     "Quantidade": int(quantidade), 
                                                     "Lote": lote, 
-                                                    "Validade": datetime.strptime(validade, "%d/%m/%Y"),
+                                                    "Validade": validade,
                                                     "Categoria": categoria}
                         escrever(db_produtos, self.produto)
                         self.on_main()
                     else:
                         messagebox.showerror("ERRO","Verifique a Data")
 
-
+    def data(self, string):
+        data_atual = datetime.now()
+        data_objt = datetime.strptime(string, "%d%m%Y")
+        data_real = data_objt.strftime("%d/%m/%Y")
+        if data_objt > data_atual:
+            return data_real
+        else:
+            messagebox.showerror("ERRO", "Verfique a Data o produto pode estar vencido")
 
 if __name__ == "__main__":
     janela = Janela_Gerente()
