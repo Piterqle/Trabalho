@@ -65,13 +65,19 @@ class Janela_Gerente(tk.Tk):
         for key, item in self.produto.items():
             valores = [item[col] for col in column]
             item_id = tree.insert("", tk.END, values=valores,)
-            if int(item["Quantidade"]) <= 15:
-                tree.item(item_id, tags=("vermelho_bg",))
-            else:
-                tree.item(item_id, tags=("verde_bg", ))
+            data_item = datetime.strptime(item["Validade"], "%d/%m/%Y" )
             
-        tree.tag_configure("verde_bg", foreground="green", font=("Arial", 10))
-        tree.tag_configure("vermelho_bg", foreground="red", font=("Arial", 10))
+            if data_item < datetime.now():
+                tree.item(item_id, tags=("yellow_bg"))
+            else:
+                if int(item["Quantidade"]) <= 15:
+                    tree.item(item_id, tags=("vermelho_bg",))
+                else:
+                    tree.item(item_id, tags=("verde_bg", ))
+        
+        tree.tag_configure("yellow_bg", foreground="#f1c40f", font=("Arial", 11))
+        tree.tag_configure("verde_bg", foreground="green", font=("Arial", 11))
+        tree.tag_configure("vermelho_bg", foreground="red", font=("Arial", 11))
 
         scroll = tk.Scrollbar(tree_frame, command=tree.yview)
         scroll.pack(side="right", fill="y")
@@ -161,19 +167,30 @@ class Janela_Gerente(tk.Tk):
         ID = self.entry_item.get()
         topico = self.combo_topico.get()
         valor = self.entry_valor.get()
+        
         if "" in (ID, topico, valor):
             messagebox.showerror("ERRO", "Preencha os Espaços")
         else:
             if topico == "Preço":
                 valor = f"{float(valor):.2f}"
-            for item in self.produto:
-                if self.produto[ID]:
-                    self.produto[ID][topico] = valor
-                    escrever(db_produtos, self.produto)
-                    self.on_main()
-                    break
+            elif topico == "Validade":
+                valor = self.data(valor)
+            
+            if valor == None:
+                messagebox.showerror("ERRO", "Verifique a Data o Produto pode estar Vencido")
             else:
-                messagebox.showerror("ERRO", "Verifique o ID")
+                for item in self.produto:
+                    if ID in self.produto:
+                        if topico in self.produto[item]:
+                            self.produto[ID][topico] = valor
+                            escrever(db_produtos, self.produto)
+                            self.on_main()
+                            break
+                        else:
+                            messagebox.showerror("ERRO", "Tópico Inexistente")
+                            break
+                else:
+                    messagebox.showerror("ERRO", "Verifique o ID")
 
     def salvar_produto(self):
         nome_produto = self.entry_nomeP.get().capitalize()
@@ -182,6 +199,7 @@ class Janela_Gerente(tk.Tk):
         lote = self.entry_loteP.get()
         validade = self.data(self.entry_validadeP.get())
         categoria = self.entry_categoriaP.get().capitalize()
+        
         if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
             messagebox.showerror("ERRO", "Preencha os espaços")
         else:
@@ -213,7 +231,11 @@ class Janela_Gerente(tk.Tk):
 
     def data(self, string):
         data_atual = datetime.now()
-        data_objt = datetime.strptime(string, "%d/%m/%Y")
+        
+        try:
+            data_objt = datetime.strptime(string, "%d%m%Y")
+        except:
+            data_objt = datetime.strptime(string, "%d/%m/%Y")
         data_real = data_objt.strftime("%d/%m/%Y")
         if data_objt > data_atual:
             return data_real

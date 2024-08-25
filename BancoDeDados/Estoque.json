@@ -3,18 +3,19 @@
     "ID": 1,
     "Nome": "Banana",
     "Preço": "R$ 2,21",
-    "Quantidade": 31,
+    "Quantidade": 9,
     "Lote": "2111212",
     "Validade": "22/08/2024",
-    "Categoria": "Fruta"
+    "Categoria": "Fruta",
+    "2": "sla"
   },
   "2": {
     "ID": 2,
-    "Nome": "Meçã",
+    "Nome": "Maçã",
     "Preço": "R$ 1,50",
     "Quantidade": 41,
     "Lote": "22212",
-    "Validade": "22/08/2025",
+    "Validade": "22/12/2025",
     "Categoria": "Fruta"
   }
 }
