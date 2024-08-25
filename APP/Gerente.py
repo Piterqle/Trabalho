@@ -191,28 +191,34 @@ class Janela_Gerente(tk.Tk):
                 if preço.isalpha() or quantidade.isalpha():
                     messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
                 else:
-                    if len(validade) >= 6:
-                        self.produto[len(self.produto)+1] = {
-                                                    "ID": len(self.produto)+1,
-                                                    "Nome": nome_produto, 
-                                                    "Preço": f"R$ {preço}", 
-                                                    "Quantidade": int(quantidade), 
-                                                    "Lote": lote, 
-                                                    "Validade": validade,
-                                                    "Categoria": categoria}
-                        escrever(db_produtos, self.produto)
-                        self.on_main()
+                    for i in self.produto:
+                        if nome_produto in self.produto[i]["Nome"]:
+                            messagebox.showerror("ERRO", "Esse produto já está cadastrado")
+                            break
                     else:
-                        messagebox.showerror("ERRO","Verifique a Data")
+                        if validade == None:
+                            messagebox.showerror("ERRO", "Verfique a Data o produto pode estar vencido")
+                            
+                        else:
+                            self.produto[len(self.produto)+1] = {
+                                                        "ID": len(self.produto)+1,
+                                                        "Nome": nome_produto, 
+                                                        "Preço": f"R$ {preço}", 
+                                                        "Quantidade": int(quantidade), 
+                                                        "Lote": lote, 
+                                                        "Validade": validade,
+                                                        "Categoria": categoria}
+                            escrever(db_produtos, self.produto)
+                            self.on_main()
 
     def data(self, string):
         data_atual = datetime.now()
-        data_objt = datetime.strptime(string, "%d%m%Y")
+        data_objt = datetime.strptime(string, "%d/%m/%Y")
         data_real = data_objt.strftime("%d/%m/%Y")
         if data_objt > data_atual:
             return data_real
         else:
-            messagebox.showerror("ERRO", "Verfique a Data o produto pode estar vencido")
+            return None
 
 if __name__ == "__main__":
     janela = Janela_Gerente()

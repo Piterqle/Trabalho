@@ -91,7 +91,7 @@ class janela_Caixa(tk.Tk):
                                                         "Nome": dict_produto[id_nome]["Nome"], 
                                                         "Quantidade": quant_item,
                                                         "Valor por Unidade": dict_produto[id_nome]["Preço"],
-                                                        "Total": f"R$ {str(add_carrinho).replace(".", ","):.2f}"}
+                                                        "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
                     break
             
             else:
