@@ -241,6 +241,9 @@ class Janela_Gerente(tk.Tk):
             return data_real
         else:
             return None
+        
+    def historico_vendas(self):
+        pass
 
 if __name__ == "__main__":
     janela = Janela_Gerente()

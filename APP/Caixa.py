@@ -33,12 +33,25 @@ class janela_Caixa(tk.Tk):
         self.frame_entry.grid(row=0, column=0, sticky="nw", padx=10)
 
         tk.Label(self.frame_entry, text="ID ou o Nome do Item:", font=("Arial", 15)).pack(anchor="w")
-        self.ID_compra = tk.Entry(self.frame_entry, width=30, bd=4, font=("Arial", 11))
+        lista_indicie = []
+        for i in self.produto:
+            lista_indicie.append(self.produto[i]["ID"])
+        self.ID_compra = ttk.Combobox(self.frame_entry, values=lista_indicie, width=28, font=("Arial", 11 ))
         self.ID_compra.pack(anchor="w")
 
         tk.Label(self.frame_entry, text="Quantidade:", font=("Arial", 15)).pack(anchor="w")
-        self.quant_compra = tk.Entry(self.frame_entry, width=30, bd=4, font=("Arial", 11))
+        self.quant_compra = tk.Entry(self.frame_entry, width=30, font=("Arial", 11))
         self.quant_compra.pack(anchor="w")
+        
+        tk.Label(self.frame_entry, text="Qual a forma de Pagamento?", font=("Arial", 15)).pack(anchor="w")
+
+        self.paga = tk.IntVar(value=0)
+        sla = 0
+        lista_pagamento = ["Dinheiro", "Débito", "Crédito", "Pix"]
+        for i in (lista_pagamento):
+            sla += 1
+            tk.Radiobutton(self.frame_entry, text=i, value=sla,font=("Arial", 9), variable=self.paga).pack(anchor="w")
+
 
         bt_carrinho = tk.Button(self.frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
         bt_carrinho.pack(side="top", pady=10)
@@ -56,13 +69,20 @@ class janela_Caixa(tk.Tk):
             self.tree.heading(coluna, text=coluna)
             self.tree.column(coluna, width=150)
 
+        self.tree.tag_configure("all", font=("Arial", 12))
+        
         scroll = ttk.Scrollbar(self.frame_tree, command=self.tree.yview)
         scroll.pack(side="right", fill="y")
         self.tree.config(yscrollcommand=scroll.set)
-        self.tree.tag_configure("all", font=("Arial", 12))
 
         self.label_total = tk.Label(self.main_frame, font=("Arial", 20, "bold"),text="O Valor Total é R$ 0,00")
         self.label_total.grid(column=1, row=1)
+
+        bt_confirm_compra = tk.Button(self.main_frame, text="Cofirmar Comprar", width=20, bg="#2ecc71", command=self.salvar_venda)
+        bt_confirm_compra.grid(column=1, row=4, pady=150, sticky="w")
+
+        bt_cancelar_compra = tk.Button(self.main_frame, text="Cancelar", width=20, bg="red", command=self.cancelar_venda)
+        bt_cancelar_compra.grid(column=1, row=4, pady=150, sticky="w", padx=170)
 
         
     
@@ -70,6 +90,7 @@ class janela_Caixa(tk.Tk):
         id_nome = self.ID_compra.get()
         quant_item = (self.quant_compra.get())
         dict_produto = self.produto
+        print(self.paga.get())
 
         if "" in (id_nome, quant_item):
             messagebox.showerror("ERRO", "Preenchar os Espaços para continua a Compra")
@@ -104,6 +125,16 @@ class janela_Caixa(tk.Tk):
                 self.tree.insert("", tk.END, values=valores, tags="all")
             string_total = str(self.total)
             self.label_total.configure(text=f"O Valor Total é R$ {string_total.replace(".", ",")}")
+        
+    def salvar_venda(self):
+        pass 
+    
+    def cancelar_venda(self):
+        for widget in self.tree.get_children():
+            self.tree.delete(widget)
+        self.label_total.configure(text="O Valor Total é R$ 0,00")
+
+
 
                 
                 
