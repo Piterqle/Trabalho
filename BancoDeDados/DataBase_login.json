@@ -1,0 +1,14 @@
+{
+  "1": {
+    "Nome": "Pedro",
+    "Gênero": "Masculino",
+    "Cargo": "Caixa",
+    "Senha": "12"
+  },
+  "2": {
+    "Nome": "Leo",
+    "Gênero": "Masculino",
+    "Cargo": "Gerente",
+    "Senha": "123"
+  }
+}

@@ -56,7 +56,7 @@ class App_Super(tk.Tk):
         self.destroy()
     
     def confirm(self):
-        nome = self.txb_nome.get()
+        nome = self.txb_nome.get().capitalize()
         senha = self.txb_senha.get()
         for i in data_base:
             if nome == data_base[i]["Nome"]:

@@ -10,6 +10,7 @@ db_vendas = "BancoDeDados/Vendas.json"
 class janela_Caixa(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.title("Caixa do Mercado do Bom")
         self.produto = ler(db_produtos)
         self.vendas = ler(db_vendas)
         self.carrinho = {}
@@ -43,14 +44,14 @@ class janela_Caixa(tk.Tk):
         self.quant_compra = tk.Entry(self.frame_entry, width=30, font=("Arial", 11))
         self.quant_compra.pack(anchor="w")
         
-        tk.Label(self.frame_entry, text="Qual a forma de Pagamento?", font=("Arial", 15)).pack(anchor="w")
+        tk.Label(self.frame_entry, text="Qual a forma de Pagamento?", font=("Arial", 15)).pack(anchor="w", pady=10)
 
         self.paga = tk.IntVar(value=0)
         sla = 0
         lista_pagamento = ["Dinheiro", "Débito", "Crédito", "Pix"]
         for i in (lista_pagamento):
             sla += 1
-            tk.Radiobutton(self.frame_entry, text=i, value=sla,font=("Arial", 9), variable=self.paga).pack(anchor="w")
+            tk.Radiobutton(self.frame_entry, text=i, value=sla,font=("Arial", 9), variable=self.paga).pack(anchor="w", pady=3)
 
 
         bt_carrinho = tk.Button(self.frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
@@ -79,10 +80,10 @@ class janela_Caixa(tk.Tk):
         self.label_total.grid(column=1, row=1)
 
         bt_confirm_compra = tk.Button(self.main_frame, text="Cofirmar Comprar", width=20, bg="#2ecc71", command=self.salvar_venda)
-        bt_confirm_compra.grid(column=1, row=4, pady=150, sticky="w")
+        bt_confirm_compra.grid(column=1, row=4, pady=110, sticky="w")
 
         bt_cancelar_compra = tk.Button(self.main_frame, text="Cancelar", width=20, bg="red", command=self.cancelar_venda)
-        bt_cancelar_compra.grid(column=1, row=4, pady=150, sticky="w", padx=170)
+        bt_cancelar_compra.grid(column=1, row=4, pady=110, sticky="w", padx=170)
 
         
     
@@ -90,7 +91,7 @@ class janela_Caixa(tk.Tk):
         id_nome = self.ID_compra.get()
         quant_item = (self.quant_compra.get())
         dict_produto = self.produto
-        print(self.paga.get())
+    
 
         if "" in (id_nome, quant_item):
             messagebox.showerror("ERRO", "Preenchar os Espaços para continua a Compra")
@@ -127,7 +128,15 @@ class janela_Caixa(tk.Tk):
             self.label_total.configure(text=f"O Valor Total é R$ {string_total.replace(".", ",")}")
         
     def salvar_venda(self):
-        pass 
+        if len(self.carrinho) == 0:
+            messagebox.showerror("ERRO", "Verifique se a há coisa no carrinho")
+        else:
+            self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
+                                               "Venda": self.carrinho, 
+                                               "Forma de Pagamento": self.paga.get(), 
+                                               "Total": self.total}
+            escrever(db_vendas, self.vendas)
+            print(self.vendas)
     
     def cancelar_venda(self):
         for widget in self.tree.get_children():
