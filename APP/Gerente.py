@@ -33,18 +33,19 @@ class Janela_Gerente(tk.Tk):
         self.produto = ler(db_produtos)
         self.title("Poderoso Chefinho")
         
-        frame_dash = tk.Frame(self, width=500 , height=100, bg="Black") #Frame Dashboard
+        frame_dash = tk.Frame(self, width=1920 , height=140, bg="Black") #Frame Dashboard
         frame_dash.pack(anchor="w")
+        frame_dash.propagate(False)
 
         tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15, "bold")).pack(padx=10)
 
         frame_buttons = tk.Frame(frame_dash, bg="Black")
         frame_buttons.pack(anchor="center", padx= 400, pady=5)
-        bt_AddProtudo = tk.Button(frame_buttons, text="🗃️ Adicionar Items", bg="white", width=20, command=self.on_add)
+        bt_AddProtudo = tk.Button(frame_buttons, text="🗃️ Adicionar Items", bg="white", width=20, command=self.add_produto)
         bt_AddProtudo.pack(pady=5)
-        bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20)
+        bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20, command=self.historico_vendas)
         bt_Vendas.pack()
-        bt_Edit= tk.Button(frame_buttons, text="Editar Item", bg="White", width=20, command=self.on_edit )
+        bt_Edit= tk.Button(frame_buttons, text="Editar Item", bg="White", width=20, command=self.screen_editar )
         bt_Edit.pack(pady=5)
 
         tree_frame = tk.Frame(self)
@@ -84,6 +85,8 @@ class Janela_Gerente(tk.Tk):
         tree.config(yscrollcommand=scroll.set)
         
     def add_produto(self):
+        for widget in self.winfo_children():
+            widget.destroy()
         self.geometry("950x600")
 
         frame_addP = tk.Frame(self, width=200, height=100 )
@@ -120,11 +123,19 @@ class Janela_Gerente(tk.Tk):
         bt_cancelar.pack(side="bottom")
      
     def screen_editar(self):
-        self.geometry("950x600")
+        root = tk.Tk()
+        root.geometry("450x600")
+        root.title("Edição")
         self.produto = ler(db_produtos)
         
-        edit_frame = tk.Frame(self)
-        edit_frame.pack(anchor="center", expand=True, pady=10)
+        deco_frame = tk.Frame(root, bg="Black",width=1920, height=100)
+        deco_frame.pack(anchor="n", expand=True)
+        deco_frame.propagate(False)
+
+        tk.Label(deco_frame, text="Menu de Edição", font=("Arial", 17,"bold"), fg="#FFFFFF", bg="Black").pack(anchor="center", expand=True)
+        
+        edit_frame = tk.Frame(root)
+        edit_frame.pack(anchor="n", expand=True, pady=10)
 
         tk.Label(edit_frame, text="Digite o ID do item:", font=("Arial", 11)).pack( anchor="w")
         self.entry_item = tk.Entry(edit_frame, width=50, bd=4)
@@ -139,31 +150,46 @@ class Janela_Gerente(tk.Tk):
         self.entry_valor = tk.Entry(edit_frame, width=50, bd=4)
         self.entry_valor.pack(pady=10, anchor="w")
 
-        bt_salvar = tk.Button(edit_frame, width=15, text="Salvar Alteração", bg="#2ecc71", command=self.editar)
+        bt_salvar = tk.Button(edit_frame, width=15, text="Salvar Alteração", bg="#2ecc71", command=lambda:self.editar(root))
         bt_salvar.pack(side="top", pady=10)
 
-        bt_cancelar = tk.Button(edit_frame, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
+        bt_cancelar = tk.Button(edit_frame, width=15, text="Cancelar", bg="#e74c3c",command=lambda: self.off_windowns(root))
         bt_cancelar.pack(side="bottom")
-
-
-    def on_add(self):
+    
+    def historico_vendas(self):
         for widget in self.winfo_children():
             widget.destroy()
         
-        self.add_produto()
+        self.title("Histórico de Vendas")
+        
+        top_frame = tk.Frame(self, width=1920, height=100, bg="Black")
+        top_frame.pack(anchor="n", expand=True)
+        top_frame.propagate(False)
+
+        tk.Label(top_frame, text="Hitórioco de Vendas", font=("Arial", 17, "bold"), fg="White", bg="Black").pack(padx=10, pady=10, side="left")
+
+        bt_voltar = tk.Button(top_frame, text="Voltar", width=15, font=("Arial", 9, "bold"),command=self.on_main)
+        bt_voltar.pack(side="right", padx=15)
+
+        frame_tree = tk.Frame(self, width=1920, height=980)
+        frame_tree.pack(anchor="n", expand=True)
+        frame_tree.propagate(False)
+
+        tree = ttk.Treeview(frame_tree)
+        lista_topico = ["ID da Venda", "Data", "Forma de Pagamento", "Total"]
+
     
     def on_main(self):
         for widget in self.winfo_children():
             widget.destroy()
         
         self.gerente()
+
     
-    def on_edit(self):
-        for widget in self.winfo_children():
-            widget.destroy()
-        self.screen_editar()
+    def off_windowns(self, root):
+        root.destroy()
     
-    def editar(self):
+    def editar(self, root):
         ID = self.entry_item.get()
         topico = self.combo_topico.get()
         valor = self.entry_valor.get()
@@ -185,6 +211,7 @@ class Janela_Gerente(tk.Tk):
                         if topico in self.produto[item]:
                             self.produto[ID][topico] = valor
                             escrever(db_produtos, self.produto)
+                            root.destroy()
                             self.on_main()
                             break
                         else:
@@ -228,6 +255,7 @@ class Janela_Gerente(tk.Tk):
                                                         "Validade": validade,
                                                         "Categoria": categoria}
                             escrever(db_produtos, self.produto)
+                            
                             self.on_main()
 
     def data(self, string):
@@ -243,8 +271,7 @@ class Janela_Gerente(tk.Tk):
         else:
             return None
         
-    def historico_vendas(self):
-        pass
+    
 
 if __name__ == "__main__":
     janela = Janela_Gerente()

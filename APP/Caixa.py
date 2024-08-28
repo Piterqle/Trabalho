@@ -2,7 +2,7 @@ import  tkinter as tk
 from tkinter import messagebox
 from tkinter import ttk
 import json
-from Gerente import ler, escrever
+from Gerente import ler, escrever, datetime
 
 # Aqui vai ficar a parte de venda dos produtos só adicionando o ID dele como se fosse  Código de barra e salvar em um arquivo
 db_produtos = "BancoDeDados/Estoque.json"
@@ -14,12 +14,12 @@ class janela_Caixa(tk.Tk):
         self.produto = ler(db_produtos)
         self.vendas = ler(db_vendas)
         self.carrinho = {}
-        self.total = 0
+        self.total = 0.0
         self.Caixa()
 
 
     def Caixa(self):
-        self.geometry("1060x600")
+        self.geometry("1100x600")
 
         self.red_frame = tk.Frame(self, bg="#e74c3c", width=950, height=80)
         self.red_frame.pack(fill="x", anchor="n")
@@ -29,6 +29,7 @@ class janela_Caixa(tk.Tk):
 
         self.main_frame = tk.Frame(self)
         self.main_frame.pack(fill="both", expand=True, padx=10, pady=10)
+        self.main_frame.propagate(False)
 
         self.frame_entry = tk.Frame(self.main_frame)
         self.frame_entry.grid(row=0, column=0, sticky="nw", padx=10)
@@ -133,6 +134,7 @@ class janela_Caixa(tk.Tk):
         else:
             self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
                                                "Venda": self.carrinho, 
+                                               "Data": self.data_now() ,
                                                "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
                                                "Total": f"R$ {str(self.total).replace(".", ",")}"}
             escrever(db_vendas, self.vendas)
@@ -144,6 +146,10 @@ class janela_Caixa(tk.Tk):
         self.label_total.configure(text="O Valor Total é R$ 0,00")
         self.carrinho.clear()
 
+    def data_now(self):
+        data = datetime.now()
+        data_obj = data.strftime("%d/%m/%Y")
+        return data_obj
     
 
 
