@@ -19,13 +19,15 @@ def escrever(a,b):
 # Controle de Vendas com uma tabela de vendas
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
 db_produtos = "BancoDeDados/Estoque.json"
-
+db_vendas = "BancoDeDados/Vendas.json"
 
 
 class Janela_Gerente(tk.Tk):
     def __init__(self):
         super().__init__()
         self.produto = ler(db_produtos)
+        self.vendas = ler(db_vendas)
+        self.dict_produtos_vendas = {}
         self.gerente()
 
     def gerente(self):
@@ -175,16 +177,26 @@ class Janela_Gerente(tk.Tk):
         frame_tree.pack(anchor="n", expand=True)
         frame_tree.propagate(False)
 
-        tree = ttk.Treeview(frame_tree)
         lista_topico = ["ID da Venda", "Data", "Forma de Pagamento", "Total"]
+        self.tree_vendas = ttk.Treeview(frame_tree, columns=lista_topico,  show="headings")
+        self.tree_vendas.pack(anchor="n", expand=True, fill="both")
+        self.tree_vendas.propagate(False)
+        for topico in lista_topico:
+            self.tree_vendas.heading(topico, text=topico)
+            self.tree_vendas.column(topico, width=100)
 
+        for key, items in self.vendas.items():
+            valores = [items[col] for col in lista_topico]
+            self.tree_vendas.insert("", "end", values=valores)
+        
+        self.tree_vendas.bind("<<TreeviewSelect>>", self.item_selecionado)
+          
     
     def on_main(self):
         for widget in self.winfo_children():
             widget.destroy()
         
         self.gerente()
-
     
     def off_windowns(self, root):
         root.destroy()
@@ -257,6 +269,18 @@ class Janela_Gerente(tk.Tk):
                             escrever(db_produtos, self.produto)
                             
                             self.on_main()
+
+    def item_selecionado(self, event=None):
+        selecionado = self.tree_vendas.selection()
+        if selecionado:
+            valores = self.tree_vendas.item(selecionado, "values")
+            vendas_selecionada = valores[0]
+            if self.vendas[vendas_selecionada]:
+                self.dict_produtos_vendas = self.vendas[vendas_selecionada]["Venda"]
+        root = tk.Tk()
+        root.geometry("600x500")
+        
+        
 
     def data(self, string):
         data_atual = datetime.now()
