@@ -1,0 +1,16 @@
+{
+  "1": {
+    "ID da Venda": 1,
+    "Venda": {
+      "1": {
+        "ID": 1,
+        "Nome": "Sla",
+        "Quantidade": "1",
+        "Valor por Unidade": "R$ 1,00",
+        "Total": "R$ 1,0"
+      }
+    },
+    "Forma de Pagamento": "Dinheiro",
+    "Total": "R$ 1,0"
+  }
+}

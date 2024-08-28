@@ -48,8 +48,8 @@ class janela_Caixa(tk.Tk):
 
         self.paga = tk.IntVar(value=0)
         sla = 0
-        lista_pagamento = ["Dinheiro", "Débito", "Crédito", "Pix"]
-        for i in (lista_pagamento):
+        self.lista_pagamento = ["Dinheiro", "Débito", "Crédito", "Pix"]
+        for i in (self.lista_pagamento):
             sla += 1
             tk.Radiobutton(self.frame_entry, text=i, value=sla,font=("Arial", 9), variable=self.paga).pack(anchor="w", pady=3)
 
@@ -96,27 +96,27 @@ class janela_Caixa(tk.Tk):
         if "" in (id_nome, quant_item):
             messagebox.showerror("ERRO", "Preenchar os Espaços para continua a Compra")
         else:
-            for index in dict_produto:
-                if dict_produto[id_nome]:
-                    quant_estoque = float(dict_produto[id_nome]["Quantidade"])
-                    valor_estoque = (quant_estoque) - float(quant_item)
-                    dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
-                    escrever(db_produtos, self.produto)
-                    preço_string = str(dict_produto[id_nome]["Preço"])
-                    preço_float = float(preço_string.replace("R$", "").replace(",", "."))
-                    
-                    
-                    
-                    add_carrinho = preço_float * float(quant_item)
-                    self.total += add_carrinho
-                    self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
-                                                        "Nome": dict_produto[id_nome]["Nome"], 
-                                                        "Quantidade": quant_item,
-                                                        "Valor por Unidade": dict_produto[id_nome]["Preço"],
-                                                        "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
+            try:
+                for index in dict_produto:
+                    if dict_produto[id_nome]:
+                        quant_estoque = float(dict_produto[id_nome]["Quantidade"])
+                        valor_estoque = (quant_estoque) - float(quant_item)
+                        dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
+                        escrever(db_produtos, self.produto)
+                        preço_string = str(dict_produto[id_nome]["Preço"])
+                        preço_float = float(preço_string.replace("R$", "").replace(",", "."))
+                        
+                        
+                        
+                        add_carrinho = preço_float * float(quant_item)
+                        self.total += add_carrinho
+                        self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
+                                                            "Nome": dict_produto[id_nome]["Nome"], 
+                                                            "Quantidade": quant_item,
+                                                            "Valor por Unidade": dict_produto[id_nome]["Preço"],
+                                                            "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
                     break
-            
-            else:
+            except:
                 messagebox.showerror("ERRO", "Verifique o ID")
             
             for widget in self.tree.get_children():
@@ -133,15 +133,18 @@ class janela_Caixa(tk.Tk):
         else:
             self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
                                                "Venda": self.carrinho, 
-                                               "Forma de Pagamento": self.paga.get(), 
-                                               "Total": self.total}
+                                               "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
+                                               "Total": f"R$ {str(self.total).replace(".", ",")}"}
             escrever(db_vendas, self.vendas)
-            print(self.vendas)
+            self.cancelar_venda()
     
     def cancelar_venda(self):
         for widget in self.tree.get_children():
             self.tree.delete(widget)
         self.label_total.configure(text="O Valor Total é R$ 0,00")
+        self.carrinho.clear()
+
+    
 
 
 

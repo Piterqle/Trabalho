@@ -172,8 +172,8 @@ class Janela_Gerente(tk.Tk):
             messagebox.showerror("ERRO", "Preencha os Espaços")
         else:
             if topico == "Preço":
-                valor = f"R$ {float(valor):.2f}"
-                valor.replace(".", ",")
+                valor = f"R$ {float(valor.replace(",", ".")):.2f}"
+                valor = str(valor).replace(".", ",")
             elif topico == "Validade":
                 valor = self.data(valor)
             
