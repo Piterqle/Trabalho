@@ -1,11 +1,227 @@
 {
   "1": {
     "ID": 1,
-    "Nome": "Sla",
+    "Nome": "Banana",
     "Preço": "R$ 1,00",
     "Quantidade": 43,
     "Lote": "222",
-    "Validade": "10/08/2025",
+    "Validade": "10/08/2023",
     "Categoria": "Sla"
+  },
+  "2": {
+    "ID": 2,
+    "Nome": "Maçã",
+    "Preço": "R$ 2,50",
+    "Quantidade": 50,
+    "Lote": "333",
+    "Validade": "12/09/2025",
+    "Categoria": "Fruta"
+  },
+  "3": {
+    "ID": 3,
+    "Nome": "Pêra",
+    "Preço": "R$ 3,00",
+    "Quantidade": 30,
+    "Lote": "444",
+    "Validade": "05/07/2025",
+    "Categoria": "Fruta"
+  },
+  "4": {
+    "ID": 4,
+    "Nome": "Laranja",
+    "Preço": "R$ 1,50",
+    "Quantidade": 60,
+    "Lote": "555",
+    "Validade": "25/06/2023",
+    "Categoria": "Fruta"
+  },
+  "5": {
+    "ID": 5,
+    "Nome": "Manga",
+    "Preço": "R$ 4,00",
+    "Quantidade": 20,
+    "Lote": "666",
+    "Validade": "15/05/2025",
+    "Categoria": "Fruta"
+  },
+  "6": {
+    "ID": 6,
+    "Nome": "Abacaxi",
+    "Preço": "R$ 5,00",
+    "Quantidade": 25,
+    "Lote": "777",
+    "Validade": "22/11/2025",
+    "Categoria": "Fruta"
+  },
+  "7": {
+    "ID": 7,
+    "Nome": "Melancia",
+    "Preço": "R$ 7,00",
+    "Quantidade": 15,
+    "Lote": "888",
+    "Validade": "18/10/2025",
+    "Categoria": "Fruta"
+  },
+  "8": {
+    "ID": 8,
+    "Nome": "Melão",
+    "Preço": "R$ 6,50",
+    "Quantidade": 18,
+    "Lote": "999",
+    "Validade": "02/12/2025",
+    "Categoria": "Fruta"
+  },
+  "9": {
+    "ID": 9,
+    "Nome": "Uva",
+    "Preço": "R$ 8,00",
+    "Quantidade": 35,
+    "Lote": "101",
+    "Validade": "30/03/2024",
+    "Categoria": "Fruta"
+  },
+  "10": {
+    "ID": 10,
+    "Nome": "Limão",
+    "Preço": "R$ 1,20",
+    "Quantidade": 40,
+    "Lote": "202",
+    "Validade": "14/01/2025",
+    "Categoria": "Fruta"
+  },
+  "11": {
+    "ID": 11,
+    "Nome": "Tomate",
+    "Preço": "R$ 2,30",
+    "Quantidade": 45,
+    "Lote": "303",
+    "Validade": "11/02/2023",
+    "Categoria": "Legume"
+  },
+  "12": {
+    "ID": 12,
+    "Nome": "Cenoura",
+    "Preço": "R$ 3,20",
+    "Quantidade": 28,
+    "Lote": "404",
+    "Validade": "22/04/2025",
+    "Categoria": "Legume"
+  },
+  "13": {
+    "ID": 13,
+    "Nome": "Batata",
+    "Preço": "R$ 2,80",
+    "Quantidade": 70,
+    "Lote": "505",
+    "Validade": "28/05/2025",
+    "Categoria": "Legume"
+  },
+  "14": {
+    "ID": 14,
+    "Nome": "Cebola",
+    "Preço": "R$ 1,90",
+    "Quantidade": 60,
+    "Lote": "606",
+    "Validade": "07/07/2025",
+    "Categoria": "Legume"
+  },
+  "15": {
+    "ID": 15,
+    "Nome": "Alho",
+    "Preço": "R$ 4,50",
+    "Quantidade": 30,
+    "Lote": "707",
+    "Validade": "13/08/2024",
+    "Categoria": "Legume"
+  },
+  "16": {
+    "ID": 16,
+    "Nome": "Pepino",
+    "Preço": "R$ 2,10",
+    "Quantidade": 55,
+    "Lote": "808",
+    "Validade": "10/02/2024",
+    "Categoria": "Legume"
+  },
+  "17": {
+    "ID": 17,
+    "Nome": "Pimentão",
+    "Preço": "R$ 3,00",
+    "Quantidade": 40,
+    "Lote": "909",
+    "Validade": "14/05/2025",
+    "Categoria": "Legume"
+  },
+  "18": {
+    "ID": 18,
+    "Nome": "Berinjela",
+    "Preço": "R$ 2,50",
+    "Quantidade": 35,
+    "Lote": "010",
+    "Validade": "08/03/2025",
+    "Categoria": "Legume"
+  },
+  "19": {
+    "ID": 19,
+    "Nome": "Chuchu",
+    "Preço": "R$ 1,80",
+    "Quantidade": 65,
+    "Lote": "111",
+    "Validade": "19/04/2025",
+    "Categoria": "Legume"
+  },
+  "20": {
+    "ID": 20,
+    "Nome": "Abóbora",
+    "Preço": "R$ 3,20",
+    "Quantidade": 45,
+    "Lote": "212",
+    "Validade": "30/06/2025",
+    "Categoria": "Legume"
+  },
+  "21": {
+    "ID": 21,
+    "Nome": "Rabanete",
+    "Preço": "R$ 2,60",
+    "Quantidade": 30,
+    "Lote": "313",
+    "Validade": "07/09/2024",
+    "Categoria": "Legume"
+  },
+  "22": {
+    "ID": 22,
+    "Nome": "Beterraba",
+    "Preço": "R$ 3,10",
+    "Quantidade": 20,
+    "Lote": "414",
+    "Validade": "15/08/2025",
+    "Categoria": "Legume"
+  },
+  "23": {
+    "ID": 23,
+    "Nome": "Repolho",
+    "Preço": "R$ 1,70",
+    "Quantidade": 40,
+    "Lote": "515",
+    "Validade": "21/11/2023",
+    "Categoria": "Legume"
+  },
+  "24": {
+    "ID": 24,
+    "Nome": "Couve",
+    "Preço": "R$ 2,20",
+    "Quantidade": 35,
+    "Lote": "616",
+    "Validade": "29/04/2025",
+    "Categoria": "Legume"
+  },
+  "25": {
+    "ID": 25,
+    "Nome": "Espinafre",
+    "Preço": "R$ 3,00",
+    "Quantidade": 25,
+    "Lote": "717",
+    "Validade": "18/06/2025",
+    "Categoria": "Legume"
   }
 }

@@ -164,11 +164,11 @@ class Janela_Gerente(tk.Tk):
         
         self.title("Histórico de Vendas")
         
-        top_frame = tk.Frame(self, width=1920, height=100, bg="Black")
+        top_frame = tk.Frame(self, width=1920, height=100, bg="#566573")
         top_frame.pack(anchor="n", expand=True)
         top_frame.propagate(False)
 
-        tk.Label(top_frame, text="Hitórioco de Vendas", font=("Arial", 17, "bold"), fg="White", bg="Black").pack(padx=10, pady=10, side="left")
+        tk.Label(top_frame, text="Hitórioco de Vendas", font=("Arial", 17, "bold"), fg="White", bg="#566573").pack(padx=10, pady=10, side="left")
 
         bt_voltar = tk.Button(top_frame, text="Voltar", width=15, font=("Arial", 9, "bold"),command=self.on_main)
         bt_voltar.pack(side="right", padx=15)
@@ -191,7 +191,6 @@ class Janela_Gerente(tk.Tk):
         
         self.tree_vendas.bind("<<TreeviewSelect>>", self.item_selecionado)
           
-    
     def on_main(self):
         for widget in self.winfo_children():
             widget.destroy()
@@ -278,9 +277,34 @@ class Janela_Gerente(tk.Tk):
             if self.vendas[vendas_selecionada]:
                 self.dict_produtos_vendas = self.vendas[vendas_selecionada]["Venda"]
         root = tk.Tk()
-        root.geometry("600x500")
+        root.geometry("700x500")
         
+        deco_frame = tk.Frame(root, width=1920, height=100, bg="#34495e")
+        deco_frame.pack(anchor="n", expand=True)
+        deco_frame.propagate(False)
+
+        tk.Label(deco_frame, text="Informações dos Produtos Vendidos", font=("Arial", 17, "bold"), bg="#34495e", fg="White").pack(anchor="center", fill="both", pady=35)
+
+        frame_tree = tk.Frame(root, width=1920, height=980)
+        frame_tree.pack(anchor="n", expand=True)
+        frame_tree.propagate(False)
+
+        produto_venda = ["ID", "Nome", "Quantidade", "Valor por Unidade", "Total" ]
+        self.tree_produto = ttk.Treeview(frame_tree, show="headings", columns=produto_venda)
+        self.tree_produto.pack(side="left", expand=True, fill="both")
+        self.tree_produto.propagate(False)
+
+        for top in produto_venda:
+            self.tree_produto.heading(top, text=top)
+            self.tree_produto.column(top, width=100)
         
+        for index, items in self.dict_produtos_vendas.items():
+            valores = [items[col] for col in produto_venda]
+            self.tree_produto.insert("", "end", values=valores)
+        
+        scroll = tk.Scrollbar(frame_tree, command=self.tree_produto.yview)
+        scroll.pack(side="right", fill="y")
+        self.tree_produto.config(yscrollcommand=scroll.set)
 
     def data(self, string):
         data_atual = datetime.now()
