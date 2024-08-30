@@ -223,5 +223,14 @@
     "Lote": "717",
     "Validade": "18/06/2025",
     "Categoria": "Legume"
+  },
+  "26": {
+    "ID": 26,
+    "Nome": "Kitkat",
+    "Preço": "R$ 20,00",
+    "Quantidade": 10,
+    "Lote": "22",
+    "Validade": "22/08/2025",
+    "Categoria": "Doce"
   }
 }

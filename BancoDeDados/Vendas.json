@@ -50,5 +50,35 @@
     "Data": "28/08/2024",
     "Forma de Pagamento": "Dinheiro",
     "Total": "R$ 70,4"
+  },
+  "4": {
+    "ID da Venda": 4,
+    "Venda": {
+      "1": {
+        "ID": 1,
+        "Nome": "Kitkat",
+        "Quantidade": "10",
+        "Valor por Unidade": "R$ 20,00",
+        "Total": "R$ 200,0"
+      }
+    },
+    "Data": "30/08/2024",
+    "Forma de Pagamento": "Crédito",
+    "Total": "R$ 200,0"
+  },
+  "5": {
+    "ID da Venda": 5,
+    "Venda": {
+      "1": {
+        "ID": 1,
+        "Nome": "Kitkat",
+        "Quantidade": "10",
+        "Valor por Unidade": "R$ 20,00",
+        "Total": "R$ 200,0"
+      }
+    },
+    "Data": "30/08/2024",
+    "Forma de Pagamento": "Crédito",
+    "Total": "R$ 200,0"
   }
 }

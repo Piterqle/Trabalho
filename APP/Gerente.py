@@ -49,10 +49,18 @@ class Janela_Gerente(tk.Tk):
 
         tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15, "bold")).pack(padx=10)
 
+        frame_pesquisa = tk.Frame(frame_dash, bg="Black")
+        frame_pesquisa.pack(anchor="e", side="bottom")
+        
         #Botão de Pesquisa no Estoque
-        bt_pesquisa = tk.Button(frame_dash, text="🔎", command=self.pesquisar, width=12)
-        bt_pesquisa.pack(anchor="e", side="bottom" )
+        bt_pesquisa = tk.Button(frame_pesquisa, text="🔎", command=self.pesquisar, width=3)
+        bt_pesquisa.grid(column=1, row=0)
 
+        #Entry de pesquisa
+        self.txb_pesquisa = tk.Entry(frame_pesquisa, width=25, bd=4)
+        self.txb_pesquisa.grid(column=0, row=0)
+
+        #Frame dos Buttons
         frame_buttons = tk.Frame(frame_dash, bg="Black")
         frame_buttons.pack(anchor="center", padx= 400, side="top")
        
@@ -76,41 +84,40 @@ class Janela_Gerente(tk.Tk):
         estilo = ttk.Style()
         estilo.configure("Treeview", font=("Arial", 10))
         column = ("ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria")
-        tree = ttk.Treeview(tree_frame, columns= column, show="headings",)
-        tree.pack(expand=True, fill="both", side="left")
-        lista_atributos = ["ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"]        
+        self.tree_menu = ttk.Treeview(tree_frame, columns= column, show="headings",)
+        self.tree_menu.pack(expand=True, fill="both", side="left")
+        self.lista_atributos = ["ID", "Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"]        
 
-        for coluna, atri in zip(column, lista_atributos):
-            tree.heading(coluna, text=atri)
-            tree.column(coluna, width=100)
+        for coluna, atri in zip(column, self.lista_atributos):
+            self.tree_menu.heading(coluna, text=atri)
+            self.tree_menu.column(coluna, width=100)
         
         self.lista_id_vencido = []
         self.lista_id_acabando = []
 
         for key, item in self.produto.items():
             valores = [item[col] for col in column]
-            item_id = tree.insert("", tk.END, values=valores,)
+            item_id = self.tree_menu.insert("", tk.END, values=valores,)
             data_item = datetime.strptime(item["Validade"], "%d/%m/%Y" )
             
             if data_item < datetime.now():
-                tree.item(item_id, tags=("yellow_bg"))
+                self.tree_menu.item(item_id, tags=("yellow_bg", "all"))
                 self.lista_id_vencido.append(str(item["ID"]))
             else:
                 if int(item["Quantidade"]) <= 15:
-                    tree.item(item_id, tags=("vermelho_bg",))
+                    self.tree_menu.item(item_id, tags=("vermelho_bg", "all"))
                     self.lista_id_acabando.append(str(item["ID"]))
                 else:
-                    tree.item(item_id, tags=("verde_bg", ))
+                    self.tree_menu.item(item_id, tags=("verde_bg", "all"))
         
-        tree.tag_configure("yellow_bg", foreground="#f1c40f", font=("Arial", 11))
-        tree.tag_configure("verde_bg", foreground="green", font=("Arial", 11))
-        tree.tag_configure("vermelho_bg", foreground="red", font=("Arial", 11))
+        self.tree_menu.tag_configure("yellow_bg", foreground="#f1c40f")
+        self.tree_menu.tag_configure("verde_bg", foreground="green")
+        self.tree_menu.tag_configure("vermelho_bg", foreground="red")
+        self.tree_menu.tag_configure("all", font=("Arial", 11))
 
-        scroll = tk.Scrollbar(tree_frame, command=tree.yview)
+        scroll = tk.Scrollbar(tree_frame, command=self.tree_menu.yview)
         scroll.pack(side="right", fill="y")
-        tree.config(yscrollcommand=scroll.set)
-        
-        
+        self.tree_menu.config(yscrollcommand=scroll.set)
         
     def add_produto(self): #Layout do Painel de Registro
         for widget in self.winfo_children():
@@ -333,8 +340,22 @@ class Janela_Gerente(tk.Tk):
         self.tree_produto.config(yscrollcommand=scroll.set)
     
     def pesquisar(self): #Função para pesquisa e colocar na tree o item
-        print("Teste")
+        item_ID = self.txb_pesquisa.get()
+        dict_pesquisa = {}
+        try:
+            if self.produto[item_ID]:
+                dict_pesquisa = self.produto[item_ID]
+                self.delete_tree()
+                valores = [dict_pesquisa[col] for col in self.lista_atributos]
+                self.tree_menu.insert("", "end", values=valores, tags=("all"))
+        except:
+            self.on_main()
 
+    def delete_tree(self):
+        for item in self.tree_menu.get_children():
+            self.tree_menu.delete(item)
+            
+    
     def data(self, string): #Função de verificação e formatação da Data
         data_atual = datetime.now()
         

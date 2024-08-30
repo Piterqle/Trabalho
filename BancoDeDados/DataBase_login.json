@@ -10,5 +10,17 @@
     "Gênero": "Masculino",
     "Cargo": "Gerente",
     "Senha": "123"
+  },
+  "3": {
+    "Nome": "Wandinha",
+    "Gênero": "Feminino",
+    "Cargo": "Gerente",
+    "Senha": "123"
+  },
+  "4": {
+    "Nome": "Mãozinha",
+    "Gênero": "Masculino",
+    "Cargo": "Caixa",
+    "Senha": "12"
   }
 }
