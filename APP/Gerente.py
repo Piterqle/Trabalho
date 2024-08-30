@@ -15,6 +15,10 @@ def ler(a):
 def escrever(a,b):
     with open(a, mode="w", encoding="utf-8") as file:
         json.dump(b, file, indent=2, ensure_ascii=False)
+    
+def lista_join(lista):
+    separada = ", ".join(lista)
+    return separada
 # Kore wa ikumasu deashboard que dê para adicionar Produtos 
 # Controle de Vendas com uma tabela de vendas
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
@@ -29,27 +33,44 @@ class Janela_Gerente(tk.Tk):
         self.vendas = ler(db_vendas)
         self.dict_produtos_vendas = {}
         self.gerente()
-
-    def gerente(self):
+        #Messabox de acordo com os Estorque 
+        messagebox.showerror("Vencidos", f"IDs: {lista_join(self.lista_id_vencido)}")
+        messagebox.showwarning("Acabando", f"IDs: {lista_join(self.lista_id_acabando)}", )
+    
+    def gerente(self): #layout do Menu
         self.geometry("950x600")
         self.produto = ler(db_produtos)
-        self.title("Poderoso Chefinho")
-        
-        frame_dash = tk.Frame(self, width=1920 , height=140, bg="Black") #Frame Dashboard
+        self.title("Área do Gerente")
+
+        #Frames aléatorios 
+        frame_dash = tk.Frame(self, width=1920 , height=160, bg="Black") #Frame Dashboard
         frame_dash.pack(anchor="w")
         frame_dash.propagate(False)
 
         tk.Label(frame_dash, text="Menu do Gerente", bg="Black", fg="white",font=("Arial", 15, "bold")).pack(padx=10)
 
+        #Botão de Pesquisa no Estoque
+        bt_pesquisa = tk.Button(frame_dash, text="🔎", command=self.pesquisar, width=12)
+        bt_pesquisa.pack(anchor="e", side="bottom" )
+
         frame_buttons = tk.Frame(frame_dash, bg="Black")
-        frame_buttons.pack(anchor="center", padx= 400, pady=5)
+        frame_buttons.pack(anchor="center", padx= 400, side="top")
+       
+        #Botão para abrir o Painel de Adicionar Produtos
         bt_AddProtudo = tk.Button(frame_buttons, text="🗃️ Adicionar Items", bg="white", width=20, command=self.add_produto)
         bt_AddProtudo.pack(pady=5)
+       
+        #Botão Para abrir o Painel de Vendas
         bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20, command=self.historico_vendas)
         bt_Vendas.pack()
+        
+        #Botão para abrir o Painel de edição de Items
         bt_Edit= tk.Button(frame_buttons, text="Editar Item", bg="White", width=20, command=self.screen_editar )
         bt_Edit.pack(pady=5)
-
+        
+        
+        
+        #Códigos da TreeView
         tree_frame = tk.Frame(self)
         tree_frame.pack(fill="both", expand=True)
         estilo = ttk.Style()
@@ -63,7 +84,8 @@ class Janela_Gerente(tk.Tk):
             tree.heading(coluna, text=atri)
             tree.column(coluna, width=100)
         
-        
+        self.lista_id_vencido = []
+        self.lista_id_acabando = []
 
         for key, item in self.produto.items():
             valores = [item[col] for col in column]
@@ -72,9 +94,11 @@ class Janela_Gerente(tk.Tk):
             
             if data_item < datetime.now():
                 tree.item(item_id, tags=("yellow_bg"))
+                self.lista_id_vencido.append(str(item["ID"]))
             else:
                 if int(item["Quantidade"]) <= 15:
                     tree.item(item_id, tags=("vermelho_bg",))
+                    self.lista_id_acabando.append(str(item["ID"]))
                 else:
                     tree.item(item_id, tags=("verde_bg", ))
         
@@ -86,7 +110,9 @@ class Janela_Gerente(tk.Tk):
         scroll.pack(side="right", fill="y")
         tree.config(yscrollcommand=scroll.set)
         
-    def add_produto(self):
+        
+        
+    def add_produto(self): #Layout do Painel de Registro
         for widget in self.winfo_children():
             widget.destroy()
         self.geometry("950x600")
@@ -124,7 +150,7 @@ class Janela_Gerente(tk.Tk):
         bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
         bt_cancelar.pack(side="bottom")
      
-    def screen_editar(self):
+    def screen_editar(self): #Layout de Edição
         root = tk.Tk()
         root.geometry("450x600")
         root.title("Edição")
@@ -158,7 +184,7 @@ class Janela_Gerente(tk.Tk):
         bt_cancelar = tk.Button(edit_frame, width=15, text="Cancelar", bg="#e74c3c",command=lambda: self.off_windowns(root))
         bt_cancelar.pack(side="bottom")
     
-    def historico_vendas(self):
+    def historico_vendas(self): #Layout de Histórico de Vendas
         for widget in self.winfo_children():
             widget.destroy()
         
@@ -191,16 +217,16 @@ class Janela_Gerente(tk.Tk):
         
         self.tree_vendas.bind("<<TreeviewSelect>>", self.item_selecionado)
           
-    def on_main(self):
+    def on_main(self): #Comando Para retornar para o Menu
         for widget in self.winfo_children():
             widget.destroy()
         
         self.gerente()
     
-    def off_windowns(self, root):
+    def off_windowns(self, root): #Comando para apagar a janela
         root.destroy()
     
-    def editar(self, root):
+    def editar(self, root): #Comando para Edição de Item 
         ID = self.entry_item.get()
         topico = self.combo_topico.get()
         valor = self.entry_valor.get()
@@ -231,7 +257,7 @@ class Janela_Gerente(tk.Tk):
                 else:
                     messagebox.showerror("ERRO", "Verifique o ID")
 
-    def salvar_produto(self):
+    def salvar_produto(self): #Comando para salvar no Dicionário o Item
         nome_produto = self.entry_nomeP.get().capitalize()
         preço = self.entry_preçokg.get()
         quantidade =self.entry_quantP.get()
@@ -269,7 +295,7 @@ class Janela_Gerente(tk.Tk):
                             
                             self.on_main()
 
-    def item_selecionado(self, event=None):
+    def item_selecionado(self, event=None): #Pegar o item Selecionado e Mostrar o Historico
         selecionado = self.tree_vendas.selection()
         if selecionado:
             valores = self.tree_vendas.item(selecionado, "values")
@@ -305,8 +331,11 @@ class Janela_Gerente(tk.Tk):
         scroll = tk.Scrollbar(frame_tree, command=self.tree_produto.yview)
         scroll.pack(side="right", fill="y")
         self.tree_produto.config(yscrollcommand=scroll.set)
+    
+    def pesquisar(self): #Função para pesquisa e colocar na tree o item
+        print("Teste")
 
-    def data(self, string):
+    def data(self, string): #Função de verificação e formatação da Data
         data_atual = datetime.now()
         
         try:
