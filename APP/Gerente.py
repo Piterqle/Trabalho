@@ -17,8 +17,11 @@ def escrever(a,b):
         json.dump(b, file, indent=2, ensure_ascii=False)
     
 def lista_join(lista):
-    separada = ", ".join(lista)
-    return separada
+    lista_certa = []
+    for tupla in lista:
+        separada = ", ".join(tupla)
+        lista_certa.append(separada)
+    return lista_join(lista_certa)
 # Kore wa ikumasu deashboard que dê para adicionar Produtos 
 # Controle de Vendas com uma tabela de vendas
 # Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
@@ -102,11 +105,11 @@ class Janela_Gerente(tk.Tk):
             
             if data_item < datetime.now():
                 self.tree_menu.item(item_id, tags=("yellow_bg", "all"))
-                self.lista_id_vencido.append(str(item["ID"]))
+                self.lista_id_vencido.append((str(item["ID"]), str(item["Nome"])))
             else:
                 if int(item["Quantidade"]) <= 15:
                     self.tree_menu.item(item_id, tags=("vermelho_bg", "all"))
-                    self.lista_id_acabando.append(str(item["ID"]))
+                    self.lista_id_acabando.append((str(item["ID"]), str(item["Nome"])))
                 else:
                     self.tree_menu.item(item_id, tags=("verde_bg", "all"))
         
@@ -344,18 +347,18 @@ class Janela_Gerente(tk.Tk):
         dict_pesquisa = {}
         try:
             if self.produto[item_ID]:
-                dict_pesquisa = self.produto[item_ID]
-                self.delete_tree()
-                valores = [dict_pesquisa[col] for col in self.lista_atributos]
-                self.tree_menu.insert("", "end", values=valores, tags=("all"))
+                self.pesqui_reut(item_ID)
         except:
-            self.on_main()
+            for key, item in self.produto.items():
+                if item["Nome"] == item_ID.capitalize():
+                    self.pesqui_reut(key)
+            else:
+                messagebox.showerror("ERRO", "ID ou Nome não Existem")
 
-    def delete_tree(self):
+    def delete_tree(self): #Funçaõ para excluir a tree_menu
         for item in self.tree_menu.get_children():
             self.tree_menu.delete(item)
             
-    
     def data(self, string): #Função de verificação e formatação da Data
         data_atual = datetime.now()
         
@@ -369,6 +372,20 @@ class Janela_Gerente(tk.Tk):
         else:
             return None
         
+    def pesqui_reut(self, ID_nome): #Reeutiliza o codigo Para da insert
+        dict_pesquisa = self.produto[ID_nome]
+        self.delete_tree()
+        valores = [dict_pesquisa[col] for col in self.lista_atributos]
+        item_tree =self.tree_menu.insert("", "end", values=valores, tags=("all"))
+        data_item = datetime.strptime(dict_pesquisa["Validade"], "%d/%m/%Y" )
+        #Colore de Acordo com a condição
+        if data_item < datetime.now():
+            self.tree_menu.item(item_tree, tags=("yellow_bg", "all"))
+        else:
+            if int(dict_pesquisa["Quantidade"]) <= 15:
+                self.tree_menu.item(item_tree, tags=("vermelho_bg", "all"))
+            else:
+                self.tree_menu.item(item_tree, tags=("verde_bg", "all"))
     
 
 if __name__ == "__main__":
