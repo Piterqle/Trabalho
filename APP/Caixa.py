@@ -19,6 +19,7 @@ class janela_Caixa(tk.Tk):
 
 
     def Caixa(self):
+
         self.geometry("1100x600")
 
         self.red_frame = tk.Frame(self, bg="#e74c3c", width=950, height=80)
@@ -38,10 +39,11 @@ class janela_Caixa(tk.Tk):
         lista_indicie = []
         for i in self.produto:
             lista_indicie.append(self.produto[i]["ID"])
+        
         self.ID_compra = ttk.Combobox(self.frame_entry, values=lista_indicie, width=28, font=("Arial", 11 ))
         self.ID_compra.pack(anchor="w")
 
-        tk.Label(self.frame_entry, text="Quantidade:", font=("Arial", 15)).pack(anchor="w")
+        tk.Label(self.frame_entry, text="Unidade/Peso:", font=("Arial", 15)).pack(anchor="w")
         self.quant_compra = tk.Entry(self.frame_entry, width=30, font=("Arial", 11))
         self.quant_compra.pack(anchor="w")
         
@@ -84,9 +86,7 @@ class janela_Caixa(tk.Tk):
         bt_confirm_compra.grid(column=1, row=4, pady=110, sticky="w")
 
         bt_cancelar_compra = tk.Button(self.main_frame, text="Cancelar", width=20, bg="red", command=self.cancelar_venda)
-        bt_cancelar_compra.grid(column=1, row=4, pady=110, sticky="w", padx=170)
-
-        
+        bt_cancelar_compra.grid(column=1, row=4, pady=110, sticky="w", padx=170)  
     
     def adicionar_carrinho(self):
         id_nome = self.ID_compra.get()
@@ -101,7 +101,7 @@ class janela_Caixa(tk.Tk):
                 for index in dict_produto:
                     if dict_produto[id_nome]:
                         quant_estoque = float(dict_produto[id_nome]["Quantidade"])
-                        valor_estoque = (quant_estoque) - float(quant_item)
+                        valor_estoque = (quant_estoque) - float(str(quant_item).replace(",", "."))
                         dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
                         escrever(db_produtos, self.produto)
                         preço_string = str(dict_produto[id_nome]["Preço"])
@@ -109,7 +109,7 @@ class janela_Caixa(tk.Tk):
                         
                         
                         
-                        add_carrinho = preço_float * float(quant_item)
+                        add_carrinho = preço_float * float(str(quant_item).replace(",", "."))
                         self.total += add_carrinho
                         self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
                                                             "Nome": dict_produto[id_nome]["Nome"], 
@@ -117,7 +117,7 @@ class janela_Caixa(tk.Tk):
                                                             "Valor por Unidade": dict_produto[id_nome]["Preço"],
                                                             "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
                     break
-            except:
+            except ImportError:
                 messagebox.showerror("ERRO", "Verifique o ID")
             
             for widget in self.tree.get_children():

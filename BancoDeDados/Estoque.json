@@ -3,7 +3,7 @@
     "ID": 1,
     "Nome": "Banana",
     "Preço": "R$ 1,00",
-    "Quantidade": 43,
+    "Quantidade": "1",
     "Lote": "222",
     "Validade": "10/08/2023",
     "Categoria": "Sla"
@@ -21,7 +21,7 @@
     "ID": 3,
     "Nome": "Pêra",
     "Preço": "R$ 3,00",
-    "Quantidade": 30,
+    "Quantidade": 20,
     "Lote": "444",
     "Validade": "05/07/2025",
     "Categoria": "Fruta"
@@ -201,7 +201,7 @@
     "ID": 23,
     "Nome": "Repolho",
     "Preço": "R$ 1,70",
-    "Quantidade": 40,
+    "Quantidade": 37,
     "Lote": "515",
     "Validade": "21/11/2023",
     "Categoria": "Legume"

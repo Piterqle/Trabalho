@@ -19,12 +19,12 @@ def escrever(a,b):
 def lista_join(lista):
     lista_certa = []
     for tupla in lista:
-        separada = ", ".join(tupla)
-        lista_certa.append(separada)
-    return lista_join(lista_certa)
-# Kore wa ikumasu deashboard que dê para adicionar Produtos 
-# Controle de Vendas com uma tabela de vendas
-# Controle de Estoque q tenha as vendas do porduto e vai avisar a quantidade dele
+        separada = "  ".join(tupla)
+        lista_certa.append(f"IDs:{separada}")
+    return lista_certa
+
+
+
 db_produtos = "BancoDeDados/Estoque.json"
 db_vendas = "BancoDeDados/Vendas.json"
 
@@ -37,8 +37,7 @@ class Janela_Gerente(tk.Tk):
         self.dict_produtos_vendas = {}
         self.gerente()
         #Messabox de acordo com os Estorque 
-        messagebox.showerror("Vencidos", f"IDs: {lista_join(self.lista_id_vencido)}")
-        messagebox.showwarning("Acabando", f"IDs: {lista_join(self.lista_id_acabando)}", )
+        self.alerta()
     
     def gerente(self): #layout do Menu
         self.geometry("950x600")
@@ -134,7 +133,7 @@ class Janela_Gerente(tk.Tk):
         self.entry_nomeP = tk.Entry(frame_addP, width=50, bd=4)
         self.entry_nomeP.pack(pady=10, anchor="w")
 
-        tk.Label(frame_addP, text="Preço por KG", font=("Arial", 11) ).pack(anchor="w")
+        tk.Label(frame_addP, text="Preço por Unidade ou KG", font=("Arial", 11) ).pack(anchor="w")
         self.entry_preçokg = tk.Entry(frame_addP, width=50, bd=4)
         self.entry_preçokg.pack(pady=10, anchor="w")
 
@@ -176,8 +175,12 @@ class Janela_Gerente(tk.Tk):
         edit_frame.pack(anchor="n", expand=True, pady=10)
 
         tk.Label(edit_frame, text="Digite o ID do item:", font=("Arial", 11)).pack( anchor="w")
-        self.entry_item = tk.Entry(edit_frame, width=50, bd=4)
+        lista_indicie = []
+        for i in self.produto:
+            lista_indicie.append(f"{self.produto[i]["ID"]} {self.produto[i]["Nome"]}")
+        self.entry_item = ttk.Combobox(edit_frame, width=48, values=lista_indicie)
         self.entry_item.pack(pady=10, anchor="w")
+            
 
         tk.Label(edit_frame, text="Editar Qual Tópico:", font=("Arial", 11)).pack( anchor="w")
         self.combo_topico = ttk.Combobox(edit_frame, values=("Nome", "Preço", "Quantidade", "Lote", "Validade", "Categoria"),
@@ -253,10 +256,11 @@ class Janela_Gerente(tk.Tk):
             if valor == None:
                 messagebox.showerror("ERRO", "Verifique a Data o Produto pode estar Vencido")
             else:
-                for item in self.produto:
-                    if ID in self.produto:
-                        if topico in self.produto[item]:
-                            self.produto[ID][topico] = valor
+                for key, item in self.produto.items():
+                    identificação = f"{item["ID"]} {item["Nome"]}"
+                    if ID == identificação:
+                        if topico in item:
+                            item[topico] = valor
                             escrever(db_produtos, self.produto)
                             root.destroy()
                             self.on_main()
@@ -387,6 +391,14 @@ class Janela_Gerente(tk.Tk):
             else:
                 self.tree_menu.item(item_tree, tags=("verde_bg", "all"))
     
+    def alerta(self):
+        resultado = lista_join(self.lista_id_vencido)
+        resultado = " |  ".join(resultado)
+        messagebox.showerror("Vencidos", f"{resultado}")
+
+        resultado = lista_join(self.lista_id_acabando)
+        resultado = " | ".join(resultado)
+        messagebox.showwarning("Acabando", f"{resultado}", )
 
 if __name__ == "__main__":
     janela = Janela_Gerente()
