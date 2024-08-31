@@ -258,7 +258,7 @@ class Janela_Gerente(tk.Tk):
             else:
                 for key, item in self.produto.items():
                     identificação = f"{item["ID"]} {item["Nome"]}"
-                    if ID == identificação:
+                    if ID in identificação:
                         if topico in item:
                             item[topico] = valor
                             escrever(db_produtos, self.produto)
