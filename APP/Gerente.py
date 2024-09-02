@@ -20,7 +20,7 @@ def lista_join(lista):
     lista_certa = []
     for tupla in lista:
         separada = "  ".join(tupla)
-        lista_certa.append(f"IDs:{separada}")
+        lista_certa.append(f"ID: {separada}")
     return lista_certa
 
 
@@ -218,7 +218,7 @@ class Janela_Gerente(tk.Tk):
 
         lista_topico = ["ID da Venda", "Data", "Forma de Pagamento", "Total"]
         self.tree_vendas = ttk.Treeview(frame_tree, columns=lista_topico,  show="headings")
-        self.tree_vendas.pack(anchor="n", expand=True, fill="both")
+        self.tree_vendas.pack(side="left", expand=True, fill="both")
         self.tree_vendas.propagate(False)
         for topico in lista_topico:
             self.tree_vendas.heading(topico, text=topico)
@@ -229,6 +229,10 @@ class Janela_Gerente(tk.Tk):
             self.tree_vendas.insert("", "end", values=valores)
         
         self.tree_vendas.bind("<<TreeviewSelect>>", self.item_selecionado)
+
+        scroll = tk.Scrollbar(frame_tree, command=self.tree_vendas.yview)
+        scroll.pack(side="right", fill="y")
+        self.tree_vendas.config(yscrollcommand=scroll.set)
           
     def on_main(self): #Comando Para retornar para o Menu
         for widget in self.winfo_children():
@@ -329,7 +333,7 @@ class Janela_Gerente(tk.Tk):
         frame_tree.pack(anchor="n", expand=True)
         frame_tree.propagate(False)
 
-        produto_venda = ["ID", "Nome", "Quantidade", "Valor por Unidade", "Total" ]
+        produto_venda = ["ID", "Nome", "Quantidade", "Valor do Produto", "Total" ]
         self.tree_produto = ttk.Treeview(frame_tree, show="headings", columns=produto_venda)
         self.tree_produto.pack(side="left", expand=True, fill="both")
         self.tree_produto.propagate(False)
@@ -340,8 +344,10 @@ class Janela_Gerente(tk.Tk):
         
         for index, items in self.dict_produtos_vendas.items():
             valores = [items[col] for col in produto_venda]
-            self.tree_produto.insert("", "end", values=valores)
+            self.tree_produto.insert("", "end", values=valores, tags=("all"))
         
+        self.tree_produto.tag_configure("all", font=("Arial", 11))
+
         scroll = tk.Scrollbar(frame_tree, command=self.tree_produto.yview)
         scroll.pack(side="right", fill="y")
         self.tree_produto.config(yscrollcommand=scroll.set)
@@ -356,6 +362,7 @@ class Janela_Gerente(tk.Tk):
             for key, item in self.produto.items():
                 if item["Nome"] == item_ID.capitalize():
                     self.pesqui_reut(key)
+                    break
             else:
                 messagebox.showerror("ERRO", "ID ou Nome não Existem")
 
@@ -394,11 +401,11 @@ class Janela_Gerente(tk.Tk):
     def alerta(self):
         resultado = lista_join(self.lista_id_vencido)
         resultado = " |  ".join(resultado)
-        messagebox.showerror("Vencidos", f"{resultado}")
+        messagebox.showerror("Produtod Vencidos", f"{resultado}")
 
         resultado = lista_join(self.lista_id_acabando)
         resultado = " | ".join(resultado)
-        messagebox.showwarning("Acabando", f"{resultado}", )
+        messagebox.showwarning("ProdutosAcabando", f"{resultado}", )
 
 if __name__ == "__main__":
     janela = Janela_Gerente()

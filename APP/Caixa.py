@@ -15,7 +15,9 @@ class janela_Caixa(tk.Tk):
         self.vendas = ler(db_vendas)
         self.carrinho = {}
         self.total = 0.0
+        self.confirmar = 0
         self.Caixa()
+        
 
 
     def Caixa(self):
@@ -60,7 +62,7 @@ class janela_Caixa(tk.Tk):
         bt_carrinho = tk.Button(self.frame_entry, text="Adicionar", command=self.adicionar_carrinho, width=15, bg="#d4ac0d")
         bt_carrinho.pack(side="top", pady=10)
 
-        self.lista_topico = ["ID", "Nome", "Quantidade", "Valor por Unidade", "Total"]
+        self.lista_topico = ["ID", "Nome", "Quantidade", "Valor do Produto", "Total"]
         self.frame_tree = tk.Frame(self.main_frame, width=300, height=300)
         self.frame_tree.grid(row=0, column=1, padx=10, pady=10)
         self.frame_tree.grid_propagate(False)
@@ -79,7 +81,7 @@ class janela_Caixa(tk.Tk):
         scroll.pack(side="right", fill="y")
         self.tree.config(yscrollcommand=scroll.set)
 
-        self.label_total = tk.Label(self.main_frame, font=("Arial", 20, "bold"),text="O Valor Total é R$ 0,00")
+        self.label_total = tk.Label(self.main_frame, font=("Arial", 20, "bold"),text="Total a Pagar: R$ 0,00")
         self.label_total.grid(column=1, row=1)
 
         bt_confirm_compra = tk.Button(self.main_frame, text="Cofirmar Comprar", width=20, bg="#2ecc71", command=self.salvar_venda)
@@ -101,21 +103,25 @@ class janela_Caixa(tk.Tk):
                 for index in dict_produto:
                     if dict_produto[id_nome]:
                         quant_estoque = float(dict_produto[id_nome]["Quantidade"])
-                        valor_estoque = (quant_estoque) - float(str(quant_item).replace(",", "."))
-                        dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
-                        escrever(db_produtos, self.produto)
-                        preço_string = str(dict_produto[id_nome]["Preço"])
-                        preço_float = float(preço_string.replace("R$", "").replace(",", "."))
-                        
-                        
-                        
-                        add_carrinho = preço_float * float(str(quant_item).replace(",", "."))
-                        self.total += add_carrinho
-                        self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
-                                                            "Nome": dict_produto[id_nome]["Nome"], 
-                                                            "Quantidade": quant_item,
-                                                            "Valor por Unidade": dict_produto[id_nome]["Preço"],
-                                                            "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
+                        quant_item = float(str(quant_item).replace(",", "."))
+                        if quant_estoque < quant_item:
+                            messagebox.showerror("ERRO", "Quantidade Requisitada é maior do que a do Estoque")
+                        else:
+                            valor_estoque = quant_estoque - quant_item
+                            dict_produto[id_nome]["Quantidade"] = int(valor_estoque)
+                            escrever(db_produtos, self.produto)
+                            preço_string = str(dict_produto[id_nome]["Preço"])
+                            preço_float = float(preço_string.replace("R$", "").replace(",", "."))
+                            
+                            
+                            
+                            add_carrinho = preço_float * float(str(quant_item).replace(",", "."))
+                            self.total += add_carrinho
+                            self.carrinho[len(self.carrinho)+1] = {"ID": len(self.carrinho)+1,
+                                                                "Nome": dict_produto[id_nome]["Nome"], 
+                                                                "Quantidade": quant_item,
+                                                                "Valor do Produto": dict_produto[id_nome]["Preço"],
+                                                                "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
                     break
             except ImportError:
                 messagebox.showerror("ERRO", "Verifique o ID")
@@ -125,36 +131,48 @@ class janela_Caixa(tk.Tk):
             for key, index in self.carrinho.items():
                 valores = [index[col] for col in self.lista_topico]
                 self.tree.insert("", tk.END, values=valores, tags="all")
-            string_total = str(self.total)
-            self.label_total.configure(text=f"O Valor Total é R$ {string_total.replace(".", ",")}")
+            
+            self.string_total = f"{self.total:.2f}"
+            self.label_total.configure(text=f"Total a Pagar: R$ {self.string_total.replace(".", ",")}")
         
     def salvar_venda(self):
-        if len(self.carrinho) == 0:
-            messagebox.showerror("ERRO", "Verifique se a há coisa no carrinho")
+        self.confirmar += 1
+        if self.confirmar == 1:
+            if len(self.carrinho) == 0:
+                messagebox.showerror("ERRO", "Verifique se a há coisa no carrinho")
+            else:
+                if self.paga.get() == None:
+                    messagebox.showerror("ERRO", "Verifique a Forma de Pagamento")
+                else:
+                    tipo = messagebox.askyesno("Tipo de Cliente", "O Cliente é Cliente PLUS?") #Verficva se é cliente Plus
+                    if tipo:
+                        self.total = self.total - (self.total * 0.2)
+                        self.string_total = f"{self.total:.2f}"
+                        desconto = "+20% de desconto"
+                        self.label_total.configure(text=f"Total a Pagar: R$ {self.string_total.replace(".", ",")} {desconto}")
+                    self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
+                                                    "Venda": self.carrinho, 
+                                                    "Data": self.data_now() ,
+                                                    "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
+                                                    "Total": f"R$ {str(self.total).replace(".", ",")}"}
+                escrever(db_vendas, self.vendas)
+        elif self.confirmar == 2: 
+                self.cancelar_venda()
         else:
-            self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
-                                               "Venda": self.carrinho, 
-                                               "Data": self.data_now() ,
-                                               "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
-                                               "Total": f"R$ {str(self.total).replace(".", ",")}"}
-            escrever(db_vendas, self.vendas)
-            self.cancelar_venda()
+            messagebox.showerror("ERRO", "DEU ALGUM ERRO")
     
     def cancelar_venda(self):
+        self.confirmar = 0
         for widget in self.tree.get_children():
             self.tree.delete(widget)
-        self.label_total.configure(text="O Valor Total é R$ 0,00")
+        self.total = 0.0    
+        self.label_total.configure(text=f"Total a Pagar: R$ 0,00")
         self.carrinho.clear()
 
     def data_now(self):
         data = datetime.now()
         data_obj = data.strftime("%d/%m/%Y")
-        return data_obj
-    
-
-
-
-                
+        return data_obj            
                 
 
 if __name__ == "__main__":

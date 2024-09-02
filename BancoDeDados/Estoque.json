@@ -3,7 +3,7 @@
     "ID": 1,
     "Nome": "Banana",
     "Preço": "R$ 1,00",
-    "Quantidade": "1",
+    "Quantidade": 0,
     "Lote": "222",
     "Validade": "10/08/2023",
     "Categoria": "Sla"
@@ -12,7 +12,7 @@
     "ID": 2,
     "Nome": "Maçã",
     "Preço": "R$ 2,50",
-    "Quantidade": 50,
+    "Quantidade": 538,
     "Lote": "333",
     "Validade": "12/09/2025",
     "Categoria": "Fruta"
@@ -21,7 +21,7 @@
     "ID": 3,
     "Nome": "Pêra",
     "Preço": "R$ 3,00",
-    "Quantidade": 20,
+    "Quantidade": 8,
     "Lote": "444",
     "Validade": "05/07/2025",
     "Categoria": "Legume"
@@ -39,7 +39,7 @@
     "ID": 5,
     "Nome": "Manga",
     "Preço": "R$ 4,00",
-    "Quantidade": 20,
+    "Quantidade": 3,
     "Lote": "666",
     "Validade": "15/05/2025",
     "Categoria": "Fruta"
@@ -48,7 +48,7 @@
     "ID": 6,
     "Nome": "Abacaxi",
     "Preço": "R$ 5,00",
-    "Quantidade": 25,
+    "Quantidade": 21,
     "Lote": "777",
     "Validade": "22/11/2025",
     "Categoria": "Fruta"
@@ -66,7 +66,7 @@
     "ID": 8,
     "Nome": "Melão",
     "Preço": "R$ 6,50",
-    "Quantidade": 18,
+    "Quantidade": 8,
     "Lote": "999",
     "Validade": "02/12/2025",
     "Categoria": "Fruta"
@@ -102,7 +102,7 @@
     "ID": 12,
     "Nome": "Cenoura",
     "Preço": "R$ 3,20",
-    "Quantidade": 28,
+    "Quantidade": 26,
     "Lote": "404",
     "Validade": "22/04/2025",
     "Categoria": "Legume"
