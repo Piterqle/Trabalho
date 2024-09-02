@@ -148,7 +148,7 @@ class App_Super(tk.Tk):
             else:
                 if cargo == "Gerente":
                     if  senha == senha_gerente:
-                        data_base[len(data_base)+1] = {"Nome": nome,"Gênero": genero, "Cargo": cargo, "Senha":senha}
+                        data_base[len(data_base)+1] = {"Nome": nome.capitalize(),"Gênero": genero, "Cargo": cargo, "Senha":senha}
                         escrever(arquivo, data_base)
                         self.open_login()
                     else:

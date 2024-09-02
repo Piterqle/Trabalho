@@ -123,7 +123,7 @@ class janela_Caixa(tk.Tk):
                                                                 "Valor do Produto": dict_produto[id_nome]["Preço"],
                                                                 "Total": f"R$ {str(add_carrinho).replace(".", ",")}"}
                     break
-            except ImportError:
+            except:
                 messagebox.showerror("ERRO", "Verifique o ID")
             
             for widget in self.tree.get_children():

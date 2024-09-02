@@ -57,5 +57,20 @@
     "Data": "02/09/2024",
     "Forma de Pagamento": "Pix",
     "Total": "R$ 4,0"
+  },
+  "4": {
+    "ID da Venda": 4,
+    "Venda": {
+      "1": {
+        "ID": 1,
+        "Nome": "Melão",
+        "Quantidade": 2.0,
+        "Valor do Produto": "R$ 6,50",
+        "Total": "R$ 13,0"
+      }
+    },
+    "Data": "02/09/2024",
+    "Forma de Pagamento": "Pix",
+    "Total": "R$ 10,4"
   }
 }

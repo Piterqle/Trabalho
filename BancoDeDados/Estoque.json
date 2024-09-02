@@ -12,7 +12,7 @@
     "ID": 2,
     "Nome": "Maçã",
     "Preço": "R$ 2,50",
-    "Quantidade": 538,
+    "Quantidade": 535,
     "Lote": "333",
     "Validade": "12/09/2025",
     "Categoria": "Fruta"
@@ -24,7 +24,7 @@
     "Quantidade": 8,
     "Lote": "444",
     "Validade": "05/07/2025",
-    "Categoria": "Legume"
+    "Categoria": "Fruta"
   },
   "4": {
     "ID": 4,
@@ -66,7 +66,7 @@
     "ID": 8,
     "Nome": "Melão",
     "Preço": "R$ 6,50",
-    "Quantidade": 8,
+    "Quantidade": 6,
     "Lote": "999",
     "Validade": "02/12/2025",
     "Categoria": "Fruta"

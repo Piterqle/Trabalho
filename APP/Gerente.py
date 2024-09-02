@@ -256,9 +256,13 @@ class Janela_Gerente(tk.Tk):
                 valor = str(valor).replace(".", ",")
             elif topico == "Validade":
                 valor = self.data(valor)
-            
+            elif topico == "Nome" or topico == "Categoria":
+                string = self.verificacao_str(valor)
+                
             if valor == None:
                 messagebox.showerror("ERRO", "Verifique a Data o Produto pode estar Vencido")
+            if string == None:
+                messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
             else:
                 for key, item in self.produto.items():
                     identificação = f"{item["ID"]} {item["Nome"]}"
@@ -273,7 +277,7 @@ class Janela_Gerente(tk.Tk):
                             messagebox.showerror("ERRO", "Tópico Inexistente")
                             break
                 else:
-                    messagebox.showerror("ERRO", "Verifique o ID")
+                    messagebox.showerror("ERRO", "Verifique o ID"); kaique = "viado"; kaique **= 13491263916491
 
     def salvar_produto(self): #Comando para salvar no Dicionário o Item
         nome_produto = self.entry_nomeP.get().capitalize()
@@ -286,19 +290,20 @@ class Janela_Gerente(tk.Tk):
         if "" in (nome_produto, preço, quantidade, lote, validade, categoria):
             messagebox.showerror("ERRO", "Preencha os espaços")
         else:
-            if nome_produto.isnumeric() or categoria.isnumeric():
+            if None in (self.verificacao_str(nome_produto), self.verificacao_str(categoria)):
                 messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
             else:
-                if preço.isalpha() or quantidade.isalpha():
-                    messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
-                else:
+                try:
+                    preço = float(preço)
+                    quantidade = int(quantidade)
+                    
                     for i in self.produto:
                         if nome_produto in self.produto[i]["Nome"]:
                             messagebox.showerror("ERRO", "Esse produto já está cadastrado")
                             break
                     else:
                         if validade == None:
-                            messagebox.showerror("ERRO", "Verfique a Data o produto pode estar vencido")
+                            messagebox.showerror("ERRO", "Verfique a Data o produto pode estar vencido o pode estar Errado")
                             
                         else:
                             self.produto[len(self.produto)+1] = {
@@ -312,6 +317,8 @@ class Janela_Gerente(tk.Tk):
                             escrever(db_produtos, self.produto)
                             
                             self.on_main()
+                except:
+                    messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
 
     def item_selecionado(self, event=None): #Pegar o item Selecionado e Mostrar o Historico
         selecionado = self.tree_vendas.selection()
@@ -372,15 +379,17 @@ class Janela_Gerente(tk.Tk):
             
     def data(self, string): #Função de verificação e formatação da Data
         data_atual = datetime.now()
-        
         try:
-            data_objt = datetime.strptime(string, "%d%m%Y")
+            try:
+                data_objt = datetime.strptime(string, "%d%m%Y")
+            except:
+                data_objt = datetime.strptime(string, "%d/%m/%Y")
+            data_real = data_objt.strftime("%d/%m/%Y")
+            if data_objt > data_atual:
+                return data_real
+            else:
+                return None
         except:
-            data_objt = datetime.strptime(string, "%d/%m/%Y")
-        data_real = data_objt.strftime("%d/%m/%Y")
-        if data_objt > data_atual:
-            return data_real
-        else:
             return None
         
     def pesqui_reut(self, ID_nome): #Reeutiliza o codigo Para da insert
@@ -401,11 +410,17 @@ class Janela_Gerente(tk.Tk):
     def alerta(self):
         resultado = lista_join(self.lista_id_vencido)
         resultado = " |  ".join(resultado)
-        messagebox.showerror("Produtod Vencidos", f"{resultado}")
+        messagebox.showerror("Produtos Vencidos", f"{resultado}")
 
         resultado = lista_join(self.lista_id_acabando)
         resultado = " | ".join(resultado)
-        messagebox.showwarning("ProdutosAcabando", f"{resultado}", )
+        messagebox.showwarning("Produtos Acabando", f"{resultado}", )
+
+    def verificacao_str(self, variavel):
+        if variavel.isnumeric():
+            None
+        else:
+            return variavel
 
 if __name__ == "__main__":
     janela = Janela_Gerente()
