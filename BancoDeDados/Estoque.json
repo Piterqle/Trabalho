@@ -21,7 +21,7 @@
     "ID": 3,
     "Nome": "Pêra",
     "Preço": "R$ 3,00",
-    "Quantidade": 8,
+    "Quantidade": 7,
     "Lote": "444",
     "Validade": "05/07/2025",
     "Categoria": "Fruta"
@@ -48,7 +48,7 @@
     "ID": 6,
     "Nome": "Abacaxi",
     "Preço": "R$ 5,00",
-    "Quantidade": 21,
+    "Quantidade": 19,
     "Lote": "777",
     "Validade": "22/11/2025",
     "Categoria": "Fruta"

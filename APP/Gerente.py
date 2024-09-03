@@ -67,16 +67,17 @@ class Janela_Gerente(tk.Tk):
         frame_buttons.pack(anchor="center", padx= 400, side="top")
        
         #Botão para abrir o Painel de Adicionar Produtos
-        bt_AddProtudo = tk.Button(frame_buttons, text="🗃️ Adicionar Items", bg="white", width=20, command=self.add_produto)
+        bt_AddProtudo = tk.Button(frame_buttons, text="🗃️Adicionar Item",anchor="w", bg="white", width=20, command=self.add_produto, font=("Arial", 10))
         bt_AddProtudo.pack(pady=5)
        
         #Botão Para abrir o Painel de Vendas
-        bt_Vendas = tk.Button(frame_buttons, text="Vendas", bg="White", width=20, command=self.historico_vendas)
+        bt_Vendas = tk.Button(frame_buttons, text="💸     Vendas",anchor="w", bg="White", width=20, command=self.historico_vendas, font=("Arial", 10))
         bt_Vendas.pack()
         
         #Botão para abrir o Painel de edição de Items
-        bt_Edit= tk.Button(frame_buttons, text="Editar Item", bg="White", width=20, command=self.screen_editar )
+        bt_Edit= tk.Button(frame_buttons, text="🖊️Editar Item", anchor="w", bg="White", width=20, command=self.screen_editar , font=("Arial", 10))
         bt_Edit.pack(pady=5)
+
         
         
         
@@ -122,41 +123,41 @@ class Janela_Gerente(tk.Tk):
         self.tree_menu.config(yscrollcommand=scroll.set)
         
     def add_produto(self): #Layout do Painel de Registro
-        for widget in self.winfo_children():
-            widget.destroy()
-        self.geometry("950x600")
+        root = tk.Tk()
+        root.geometry("550x600")
+        root.title("Cadastro do Produto")
 
-        frame_addP = tk.Frame(self, width=200, height=100 )
-        frame_addP.pack(padx=10 , pady=10)
+        frame_addP = tk.Frame(root, width=200, height=100 )
+        frame_addP.pack( anchor="center", pady=10)
         
         tk.Label(frame_addP, text="Nome do Produto:", font=("Arial", 11)).pack( anchor="w")
-        self.entry_nomeP = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_nomeP = tk.Entry(frame_addP, width=50, )
         self.entry_nomeP.pack(pady=10, anchor="w")
 
         tk.Label(frame_addP, text="Preço por Unidade ou KG", font=("Arial", 11) ).pack(anchor="w")
-        self.entry_preçokg = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_preçokg = tk.Entry(frame_addP, width=50, )
         self.entry_preçokg.pack(pady=10, anchor="w")
 
         tk.Label(frame_addP, text="Quantidade", font=("Arial", 11)).pack(anchor="w")
-        self.entry_quantP = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_quantP = tk.Entry(frame_addP, width=50, )
         self.entry_quantP.pack(pady=10, anchor="w")
 
         tk.Label(frame_addP, text="Lote", font=("Arial", 11)).pack(anchor="w")
-        self.entry_loteP = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_loteP = tk.Entry(frame_addP, width=50, )
         self.entry_loteP.pack(pady=10, anchor="w")
 
         tk.Label(frame_addP, text="Validade", font=("Arial", 11)).pack(anchor="w")
-        self.entry_validadeP = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_validadeP = tk.Entry(frame_addP, width=50, )
         self.entry_validadeP.pack(pady=10, anchor="w")
 
         tk.Label(frame_addP, text="Categoria", font=("Arial", 11)).pack(anchor="w")
-        self.entry_categoriaP = tk.Entry(frame_addP, width=50, bd=4)
+        self.entry_categoriaP = tk.Entry(frame_addP, width=50,)
         self.entry_categoriaP.pack(pady=10, anchor="w")
 
-        bt_salvar = tk.Button(frame_addP, width=15, text="Salvar Produto", bg="#2ecc71", command=self.salvar_produto)
+        bt_salvar = tk.Button(frame_addP, width=15, text="Salvar Produto", bg="#2ecc71", command=lambda:self.salvar_produto(root))
         bt_salvar.pack(side="top", pady=10)
 
-        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=self.on_main)
+        bt_cancelar = tk.Button(frame_addP, width=15, text="Cancelar", bg="#e74c3c",command=lambda:self.off_windowns(root))
         bt_cancelar.pack(side="bottom")
      
     def screen_editar(self): #Layout de Edição
@@ -216,7 +217,7 @@ class Janela_Gerente(tk.Tk):
         frame_tree.pack(anchor="n", expand=True)
         frame_tree.propagate(False)
 
-        lista_topico = ["ID da Venda", "Data", "Forma de Pagamento", "Total"]
+        lista_topico = ["ID da Venda", "Data", "Horas", "Forma de Pagamento", "Total"]
         self.tree_vendas = ttk.Treeview(frame_tree, columns=lista_topico,  show="headings")
         self.tree_vendas.pack(side="left", expand=True, fill="both")
         self.tree_vendas.propagate(False)
@@ -233,7 +234,7 @@ class Janela_Gerente(tk.Tk):
         scroll = tk.Scrollbar(frame_tree, command=self.tree_vendas.yview)
         scroll.pack(side="right", fill="y")
         self.tree_vendas.config(yscrollcommand=scroll.set)
-          
+        
     def on_main(self): #Comando Para retornar para o Menu
         for widget in self.winfo_children():
             widget.destroy()
@@ -257,12 +258,10 @@ class Janela_Gerente(tk.Tk):
             elif topico == "Validade":
                 valor = self.data(valor)
             elif topico == "Nome" or topico == "Categoria":
-                string = self.verificacao_str(valor)
+                valor = self.verificacao_str(valor)
                 
             if valor == None:
-                messagebox.showerror("ERRO", "Verifique a Data o Produto pode estar Vencido")
-            if string == None:
-                messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
+               pass
             else:
                 for key, item in self.produto.items():
                     identificação = f"{item["ID"]} {item["Nome"]}"
@@ -277,9 +276,9 @@ class Janela_Gerente(tk.Tk):
                             messagebox.showerror("ERRO", "Tópico Inexistente")
                             break
                 else:
-                    messagebox.showerror("ERRO", "Verifique o ID"); kaique = "viado"; kaique **= 13491263916491
+                    messagebox.showerror("ERRO", "Verifique o ID")
 
-    def salvar_produto(self): #Comando para salvar no Dicionário o Item
+    def salvar_produto(self, root): #Comando para salvar no Dicionário o Item
         nome_produto = self.entry_nomeP.get().capitalize()
         preço = self.entry_preçokg.get()
         quantidade =self.entry_quantP.get()
@@ -315,8 +314,8 @@ class Janela_Gerente(tk.Tk):
                                                         "Validade": validade,
                                                         "Categoria": categoria}
                             escrever(db_produtos, self.produto)
-                            
                             self.on_main()
+                            self.off_windowns(root)
                 except:
                     messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
 
@@ -363,7 +362,9 @@ class Janela_Gerente(tk.Tk):
         item_ID = self.txb_pesquisa.get()
         dict_pesquisa = {}
         try:
-            if self.produto[item_ID]:
+            if item_ID == "":
+                self.on_main()
+            elif self.produto[item_ID]:
                 self.pesqui_reut(item_ID)
         except:
             for key, item in self.produto.items():
@@ -388,8 +389,10 @@ class Janela_Gerente(tk.Tk):
             if data_objt > data_atual:
                 return data_real
             else:
+                messagebox.showerror("Erro", "Verfique essa Data pode estar Vencida")
                 return None
         except:
+            messagebox.showerror("Erro", "Verifique se é Uma dada existente")
             return None
         
     def pesqui_reut(self, ID_nome): #Reeutiliza o codigo Para da insert
@@ -418,7 +421,8 @@ class Janela_Gerente(tk.Tk):
 
     def verificacao_str(self, variavel):
         if variavel.isnumeric():
-            None
+            messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
+            return None
         else:
             return variavel
 

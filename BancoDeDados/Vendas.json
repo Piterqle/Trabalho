@@ -4,73 +4,15 @@
     "Venda": {
       "1": {
         "ID": 1,
-        "Nome": "Maçã",
-        "Quantidade": 3.0,
-        "Valor do Produto": "R$ 2,50",
-        "Total": "R$ 7,5"
-      },
-      "2": {
-        "ID": 2,
-        "Nome": "Maçã",
-        "Quantidade": 3.0,
-        "Valor do Produto": "R$ 2,50",
-        "Total": "R$ 7,5"
-      },
-      "3": {
-        "ID": 3,
-        "Nome": "Maçã",
-        "Quantidade": 3.0,
-        "Valor do Produto": "R$ 2,50",
-        "Total": "R$ 7,5"
+        "Nome": "Pêra",
+        "Quantidade": 1.0,
+        "Valor do Produto": "R$ 3,00",
+        "Total": "R$ 3,0"
       }
     },
     "Data": "02/09/2024",
+    "Horas": "21:54:29",
     "Forma de Pagamento": "Dinheiro",
-    "Total": "R$ 18,0"
-  },
-  "2": {
-    "ID da Venda": 2,
-    "Venda": {
-      "1": {
-        "ID": 1,
-        "Nome": "Maçã",
-        "Quantidade": 3.0,
-        "Valor do Produto": "R$ 2,50",
-        "Total": "R$ 7,5"
-      }
-    },
-    "Data": "02/09/2024",
-    "Forma de Pagamento": "Pix",
-    "Total": "R$ 6,0"
-  },
-  "3": {
-    "ID da Venda": 3,
-    "Venda": {
-      "1": {
-        "ID": 1,
-        "Nome": "Maçã",
-        "Quantidade": 2.0,
-        "Valor do Produto": "R$ 2,50",
-        "Total": "R$ 5,0"
-      }
-    },
-    "Data": "02/09/2024",
-    "Forma de Pagamento": "Pix",
-    "Total": "R$ 4,0"
-  },
-  "4": {
-    "ID da Venda": 4,
-    "Venda": {
-      "1": {
-        "ID": 1,
-        "Nome": "Melão",
-        "Quantidade": 2.0,
-        "Valor do Produto": "R$ 6,50",
-        "Total": "R$ 13,0"
-      }
-    },
-    "Data": "02/09/2024",
-    "Forma de Pagamento": "Pix",
-    "Total": "R$ 10,4"
+    "Total": "R$ 3,0"
   }
 }

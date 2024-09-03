@@ -152,7 +152,8 @@ class janela_Caixa(tk.Tk):
                         self.label_total.configure(text=f"Total a Pagar: R$ {self.string_total.replace(".", ",")} {desconto}")
                     self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
                                                     "Venda": self.carrinho, 
-                                                    "Data": self.data_now() ,
+                                                    "Data": self.data_now(),
+                                                    "Horas": self.hours_now() ,
                                                     "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
                                                     "Total": f"R$ {str(self.total).replace(".", ",")}"}
                 escrever(db_vendas, self.vendas)
@@ -172,7 +173,12 @@ class janela_Caixa(tk.Tk):
     def data_now(self):
         data = datetime.now()
         data_obj = data.strftime("%d/%m/%Y")
-        return data_obj            
+        return data_obj    
+    
+    def hours_now(self):
+        horas = datetime.now()
+        horas_obj = horas.strftime("%H:%M:%S")
+        return horas_obj
                 
 
 if __name__ == "__main__":
