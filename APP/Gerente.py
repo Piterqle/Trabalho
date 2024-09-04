@@ -293,6 +293,7 @@ class Janela_Gerente(tk.Tk):
                 messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Números no Espaço de Letras)")
             else:
                 try:
+                    preço =preço.replace(",", ".")
                     preço = float(preço)
                     quantidade = int(quantidade)
                     
@@ -308,7 +309,7 @@ class Janela_Gerente(tk.Tk):
                             self.produto[len(self.produto)+1] = {
                                                         "ID": len(self.produto)+1,
                                                         "Nome": nome_produto, 
-                                                        "Preço": f"R$ {preço}", 
+                                                        "Preço": f"R$ {str(preço).replace(".",",")}", 
                                                         "Quantidade": int(quantidade), 
                                                         "Lote": lote, 
                                                         "Validade": validade,
@@ -316,7 +317,7 @@ class Janela_Gerente(tk.Tk):
                             escrever(db_produtos, self.produto)
                             self.on_main()
                             self.off_windowns(root)
-                except:
+                except :
                     messagebox.showerror("ERRO", "Verifique os espaços Preenchidos (Letras no Espaço de Numeros)")
 
     def item_selecionado(self, event=None): #Pegar o item Selecionado e Mostrar o Historico

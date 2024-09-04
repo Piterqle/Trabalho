@@ -1,18 +1,18 @@
 {
   "1": {
     "ID": 1,
-    "Nome": "Banana",
+    "Nome": "Laranja",
     "Preço": "R$ 1,00",
-    "Quantidade": 0,
+    "Quantidade": "22",
     "Lote": "222",
     "Validade": "10/08/2023",
-    "Categoria": "Sla"
+    "Categoria": "Fruta"
   },
   "2": {
     "ID": 2,
     "Nome": "Maçã",
     "Preço": "R$ 2,50",
-    "Quantidade": 535,
+    "Quantidade": 532,
     "Lote": "333",
     "Validade": "12/09/2025",
     "Categoria": "Fruta"
@@ -120,7 +120,7 @@
     "ID": 14,
     "Nome": "Cebola",
     "Preço": "R$ 1,90",
-    "Quantidade": 60,
+    "Quantidade": 57,
     "Lote": "606",
     "Validade": "07/07/2025",
     "Categoria": "Legume"
@@ -129,7 +129,7 @@
     "ID": 15,
     "Nome": "Alho",
     "Preço": "R$ 4,50",
-    "Quantidade": 30,
+    "Quantidade": 27,
     "Lote": "707",
     "Validade": "13/08/2024",
     "Categoria": "Legume"
@@ -183,7 +183,7 @@
     "ID": 21,
     "Nome": "Rabanete",
     "Preço": "R$ 2,60",
-    "Quantidade": 30,
+    "Quantidade": 27,
     "Lote": "313",
     "Validade": "07/09/2024",
     "Categoria": "Legume"
@@ -210,7 +210,7 @@
     "ID": 24,
     "Nome": "Couve",
     "Preço": "R$ 2,20",
-    "Quantidade": 35,
+    "Quantidade": 33,
     "Lote": "616",
     "Validade": "29/04/2025",
     "Categoria": "Legume"
@@ -232,5 +232,50 @@
     "Lote": "22",
     "Validade": "22/08/2025",
     "Categoria": "Doce"
+  },
+  "27": {
+    "ID": 27,
+    "Nome": "Borracha",
+    "Preço": "R$ 2,0",
+    "Quantidade": 31,
+    "Lote": "22",
+    "Validade": "21/12/2025",
+    "Categoria": "Material"
+  },
+  "28": {
+    "ID": 28,
+    "Nome": "Régua",
+    "Preço": "R$ 2,0",
+    "Quantidade": 331,
+    "Lote": "22",
+    "Validade": "31/10/2025",
+    "Categoria": "Material"
+  },
+  "29": {
+    "ID": 29,
+    "Nome": "Garrafa",
+    "Preço": "R$ 14,0",
+    "Quantidade": 30,
+    "Lote": "11",
+    "Validade": "11/02/2025",
+    "Categoria": "Objeto"
+  },
+  "30": {
+    "ID": 30,
+    "Nome": "Mesa",
+    "Preço": "R$ 500,0",
+    "Quantidade": 3,
+    "Lote": "22",
+    "Validade": "10/10/2026",
+    "Categoria": "Objeto"
+  },
+  "31": {
+    "ID": 31,
+    "Nome": "Mouse",
+    "Preço": "R$ 41,5",
+    "Quantidade": 31,
+    "Lote": "51",
+    "Validade": "21/10/2025",
+    "Categoria": "Objeto"
   }
 }

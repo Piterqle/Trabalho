@@ -149,13 +149,14 @@ class janela_Caixa(tk.Tk):
                         self.total = self.total - (self.total * 0.2)
                         self.string_total = f"{self.total:.2f}"
                         desconto = "+20% de desconto"
+                        total_2f = f"{self.total:.2f}"
                         self.label_total.configure(text=f"Total a Pagar: R$ {self.string_total.replace(".", ",")} {desconto}")
                     self.vendas[len(self.vendas)+1] = {"ID da Venda": len(self.vendas)+1, 
                                                     "Venda": self.carrinho, 
                                                     "Data": self.data_now(),
                                                     "Horas": self.hours_now() ,
                                                     "Forma de Pagamento": self.lista_pagamento[self.paga.get()-1], 
-                                                    "Total": f"R$ {str(self.total).replace(".", ",")}"}
+                                                    "Total": f"R$ {str(total_2f).replace(".", ",")}"}
                 escrever(db_vendas, self.vendas)
         elif self.confirmar == 2: 
                 self.cancelar_venda()
