@@ -47,9 +47,11 @@ class App_Super(tk.Tk):
         bt_cancelar = tk.Button(frame_login, text="Cancelar", width=10, command=self.cancelar)
         bt_cancelar.pack(padx=0, pady=0, side="bottom")
 
-        tk.Label(self, text="Você é novo aqui?", font=("Arial", 10)).place(x=140, y=500)
-        label_cadastro = tk.Label(self, text="Cadastre-se", font=("Arial", 10), fg="#3498db" )
-        label_cadastro.place(x=250, y=500)
+        frame_cadastro = tk.Frame(self)
+        frame_cadastro.pack(pady=110)
+        tk.Label(frame_cadastro, text="Você é novo aqui?", font=("Arial", 10)).pack(anchor="center", side="left")
+        label_cadastro = tk.Label(frame_cadastro, text="Cadastre-se", font=("Arial", 10), fg="#3498db" )
+        label_cadastro.pack(anchor="center", side="right")
         label_cadastro.bind("<Button-1>", self.open_cadastro)
 
     def cancelar(self):
@@ -94,6 +96,7 @@ class App_Super(tk.Tk):
         tk.Label(self.frame_cadastro, text="Cargo:", font=("Arial", 12) ).pack(anchor="w", pady=10)
         tk.Radiobutton(self.frame_cadastro, text="Gerente", font=("Arial", 8), variable=self.cargo, value=1).pack(anchor="w")
         tk.Radiobutton(self.frame_cadastro, text="Caixa", font=("Arial", 8), variable=self.cargo, value=2).pack(anchor="w")
+
 
         tk.Label(self.frame_cadastro, text="Senha:", font=("Arial", 11)).pack(anchor="w", pady=10)
         self.senha_cadastro = tk.Entry(self.frame_cadastro, width=50, bd=4, show="*")
