@@ -94,7 +94,6 @@ class App_Super(tk.Tk):
         tk.Label(self.frame_cadastro, text="Cargo:", font=("Arial", 12) ).pack(anchor="w", pady=10)
         tk.Radiobutton(self.frame_cadastro, text="Gerente", font=("Arial", 8), variable=self.cargo, value=1).pack(anchor="w")
         tk.Radiobutton(self.frame_cadastro, text="Caixa", font=("Arial", 8), variable=self.cargo, value=2).pack(anchor="w")
-        tk.Radiobutton(self.frame_cadastro, text="Repositor", font=("Arial", 8), variable=self.cargo, value=3).pack(anchor="w")
 
         tk.Label(self.frame_cadastro, text="Senha:", font=("Arial", 11)).pack(anchor="w", pady=10)
         self.senha_cadastro = tk.Entry(self.frame_cadastro, width=50, bd=4, show="*")
@@ -132,8 +131,6 @@ class App_Super(tk.Tk):
             cargo = "Gerente"
         elif self.cargo.get() == 2:
             cargo = "Caixa"
-        elif self.cargo.get() == 3:
-            cargo = "Repositor"
         return cargo
         
     def salvar(self, event=None):
