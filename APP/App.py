@@ -3,10 +3,24 @@ import tkinter as tk
 import json
 from Gerente import Janela_Gerente, ler, escrever
 from Caixa import janela_Caixa
+import pymysql
 
 arquivo = "BancoDeDados/DataBase_login.json"
 db_produtos = "BancoDeDados/Estoque.json"
 
+conexão = pymysql.connect(
+    host = "localhost",
+    user = "root",
+    password = "acesso123",
+    database = "supermercado",
+)
+
+cursor = conexão.cursor()
+
+comando = f"Select * from tb_login"
+cursor.execute(comando)
+resultado = cursor.fetchall()
+print(resultado)
 
 
 # gerente_nome = "Pedro"
@@ -17,7 +31,7 @@ senha_gerente = "123"
 # data_base[ID_gerente] = {"Nome": gerente_nome,"Gênero": genero_gerente,"Cargo":cargo_gerente,  "Senha": senha_gerente}
 
 produto = ler(db_produtos)
-data_base = ler(arquivo)
+data_base_arquivo = ler(arquivo)
 class App_Super(tk.Tk):
     def __init__(self, *args):
         super().__init__(*args)        
@@ -60,13 +74,13 @@ class App_Super(tk.Tk):
     def confirm(self):
         nome = self.txb_nome.get().capitalize()
         senha = self.txb_senha.get()
-        for i in data_base:
-            if nome == data_base[i]["Nome"]:
-                if senha == data_base[i]["Senha"]:
+        for i in data_base_arquivo:
+            if nome == data_base_arquivo[i]["Nome"]:
+                if senha == data_base_arquivo[i]["Senha"]:
                     messagebox.showinfo("Acesso Aceito", f"Bem-vindo: {nome}")
-                    if data_base[i]["Cargo"] == "Gerente":
+                    if data_base_arquivo[i]["Cargo"] == "Gerente":
                         self.open_gerente()
-                    elif data_base[i]["Cargo"] == "Caixa":
+                    elif data_base_arquivo[i]["Cargo"] == "Caixa":
                         self.open_caixa()
                     break
         else:
@@ -148,14 +162,14 @@ class App_Super(tk.Tk):
             else:
                 if cargo == "Gerente":
                     if  senha == senha_gerente:
-                        data_base[len(data_base)+1] = {"Nome": nome.capitalize(),"Gênero": genero, "Cargo": cargo, "Senha":senha}
-                        escrever(arquivo, data_base)
+                        data_base_arquivo[len(data_base_arquivo)+1] = {"Nome": nome.capitalize(),"Gênero": genero, "Cargo": cargo, "Senha":senha}
+                        escrever(arquivo, data_base_arquivo)
                         self.open_login()
                     else:
                         messagebox.showerror("ERRO", "Você não tem Permissão para cadastrar como Gerente")
                 else:
-                    data_base[len(data_base)+1] = {"Nome": nome,"Gênero": genero, "Cargo": cargo, "Senha":senha}
-                    escrever(arquivo, data_base)
+                    data_base_arquivo[len(data_base_arquivo)+1] = {"Nome": nome,"Gênero": genero, "Cargo": cargo, "Senha":senha}
+                    escrever(arquivo, data_base_arquivo)
                     self.open_login()
         else:
             messagebox.showerror("ERRO", "Senhas não se Coincidem")
